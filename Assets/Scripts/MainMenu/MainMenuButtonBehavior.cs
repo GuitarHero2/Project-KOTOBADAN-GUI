@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class MainMenuButtonBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void QuitProgram()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Application.Quit();
+        Debug.Log("The program closed successfully!");
     }
 }

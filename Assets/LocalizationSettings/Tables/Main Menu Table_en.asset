@@ -34,6 +34,10 @@ MonoBehaviour:
     m_Localized: Quit
     m_Metadata:
       m_Items: []
+  - m_Id: 23296986705920
+    m_Localized: External Resources
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

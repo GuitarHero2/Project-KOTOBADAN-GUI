@@ -34,6 +34,10 @@ MonoBehaviour:
     m_Localized: "St\xE4nga"
     m_Metadata:
       m_Items: []
+  - m_Id: 23296986705920
+    m_Localized: Externa Medel
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

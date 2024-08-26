@@ -2683,7 +2683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1134538788
 Transform:
   m_ObjectHideFlags: 0
@@ -4189,7 +4189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1596379267
 Transform:
   m_ObjectHideFlags: 0
@@ -5783,7 +5783,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1992675601}
-  - component: {fileID: 1992675602}
   m_Layer: 0
   m_Name: Reader
   m_TagString: Untagged
@@ -5806,23 +5805,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1596379267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1992675602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992675600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1926f54447643488a05d05af896f2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchBarText: {fileID: 88801875}
-  jmDictEN: {fileID: 4900000, guid: f9dc7626b6ff0184d998e651bd44bc55, type: 3}
-  textChecker: 
-  myWordList:
-    words: []
 --- !u!1 &2000874577
 GameObject:
   m_ObjectHideFlags: 0

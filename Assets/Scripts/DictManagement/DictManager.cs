@@ -43,6 +43,8 @@ public class DictManager : MonoBehaviour
     public TMP_Text example2;
     public TMP_Text example2Alt;
     public TMP_Text jlpt;
+    public TMP_Text longDefinitionAboutTheWordEn;
+    public TMP_Text longDefinitionAboutTheWordJp;
     public TMP_Text pageNumberText;
 
     public int pageNumber = 1;
@@ -67,13 +69,13 @@ public class DictManager : MonoBehaviour
     public void SaveToJson()
     {
         string dictData = JsonUtility.ToJson(dict);
-        string fileLocation = Application.persistentDataPath + "/KTBDictEN.json";
+        string fileLocation = Application.persistentDataPath + "/KTBDict.json";
         File.WriteAllText(fileLocation, dictData);
     }
 
     public void LoadToJson()
     {
-        string fileLocation = Application.persistentDataPath + "/KTBDictEN.json";
+        string fileLocation = Application.persistentDataPath + "/KTBDict.json";
         if (File.Exists(fileLocation))
         {
             string dictData = File.ReadAllText(fileLocation);
@@ -124,6 +126,8 @@ public class DictManager : MonoBehaviour
             example2.text = foundWord.example2;
             example2Alt.text = foundWord.example2Alt;
             jlpt.text = foundWord.jlptLevel;
+            longDefinitionAboutTheWordEn.text = foundWord.longDefinitionAboutTheWordEn;
+            longDefinitionAboutTheWordJp.text = foundWord.longDefinitionAboutTheWordJp;
 
             if (foundWord.isTheWordAGivenName == true)
             {
@@ -185,6 +189,8 @@ public class DictManager : MonoBehaviour
             isTheWordAGivenName = false;
             jlpt.text = "";
             pitch.text = "";
+            longDefinitionAboutTheWordEn.text = "";
+            longDefinitionAboutTheWordJp.text = "";
         }
     }
 
@@ -224,6 +230,8 @@ public class DictManager : MonoBehaviour
         example2.text = "";
         example2Alt.text = "";
         pitch.text = "";
+        longDefinitionAboutTheWordEn.text = "";
+        longDefinitionAboutTheWordJp.text = "";
         isTheWordAGivenName = false;
     }
 
@@ -344,5 +352,7 @@ public class InfoList
     public string example1Alt;
     public string example2;
     public string example2Alt;
+    public string longDefinitionAboutTheWordEn;
+    public string longDefinitionAboutTheWordJp;
 }
 

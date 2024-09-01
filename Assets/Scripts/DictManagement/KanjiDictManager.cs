@@ -193,31 +193,8 @@ public class KanjiDictManager : MonoBehaviour
         }
         else
         {
-            goon.text = "";
-            kanon.text = "";
-            touon.text = "";
-            souon.text = "";
-            kanyouon.text = "";
-            cr.gameObject.SetActive(false);
-            noS.gameObject.SetActive(false);
-            kunyomi.text = "";
+            ClearHistory();
             kanjiSearched.text = "Kanji not found";
-            kanjiMeaning.text = "";
-            kunyomi1.text = "";
-            kunyomi2.text = "";
-            kunyomi3.text = "";
-            kunyomi4.text = "";
-            kunyomi5.text = "";
-            kunyomi6.text = "";
-            kunyomi7.text = "";
-            goonOnyomi.text = "";
-            kanonOnyomi.text = "";
-            touonOnyomi.text = "";
-            souonOnyomi.text = "";
-            kanyouonOnyomi.text = "";
-            kanjiStrokeNumber.text = "";
-            kanjiNumberInJojoKanji.text = "";
-            jlptLevel.text = "";
         }
     }
 

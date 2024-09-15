@@ -15,7 +15,7 @@
 
 # GUI Version (Graphical User Interface)
 
-### This version will be developed under Unity and it is meant to me more intensive than its TUI counterpart. 
+### This version will be developed under Unity and is meant to me more intensive than its TUI counterpart. 
 
 # What tools does the program have?
 
@@ -25,7 +25,7 @@
 * Dictionaries for both grammar and words.
 * Support for varios languages (For now, I will stick with English, Spanish, Swedish and Japanese)
 * Content recommendation to (try to) boost your language journey.
-* Lyrics for songs (This feature is attached to change)
+* Lyrics for songs (This feature is attached to changes)
 
 # Feedback and Questions
 

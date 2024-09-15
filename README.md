@@ -15,7 +15,7 @@
 
 # GUI Version (Graphical User Interface)
 
-### This version will be developed under Unity and is meant to me more intensive than its TUI counterpart. 
+### This version will be developed under Unity and is meant to me more system demanding than its TUI counterpart. 
 
 # What tools does the program have?
 

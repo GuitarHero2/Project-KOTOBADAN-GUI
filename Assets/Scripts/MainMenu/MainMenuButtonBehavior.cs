@@ -9,4 +9,6 @@ public class MainMenuButtonBehavior : MonoBehaviour
         Application.Quit();
         Debug.Log("The program closed successfully!");
     }
+
+
 }

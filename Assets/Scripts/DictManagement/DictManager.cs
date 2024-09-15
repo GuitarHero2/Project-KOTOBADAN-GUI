@@ -25,15 +25,19 @@ public class DictManager : MonoBehaviour
     public TMP_Text longDefinitionAboutTheWordEn;
     public TMP_Text longDefinitionAboutTheWordJp;
     public TMP_Text pageNumberText;
+    public string currentRelatedWord;
 
     public int pageNumber = 1;
     public GameObject backButton;
+    public GameObject searchRelatedWordButton;
+    public TMP_Text searchRelatedWordText;
     public GameObject line1;
     public GameObject line2;
     public GameObject line3;
     public GameObject line4;
     public GameObject line5;
     public GameObject line6;
+
 
     Vector3 movementBetweenPagesLine1;
     Vector3 movementBetweenPagesLine2;
@@ -90,6 +94,27 @@ public class DictManager : MonoBehaviour
             wordSearched.text = "Word not found";
         }
     }
+    public void SearchRelatedWord()
+    {
+        string query = currentRelatedWord;
+        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
+
+        if (currentResults.Count > 0)
+        {
+            wordOptionsDropdown.gameObject.SetActive(true);
+            wordOptionsDropdown.ClearOptions();
+            wordOptionsDropdown.AddOptions(currentResults.Select(word => word.word).ToList());
+            wordOptionsDropdown.onValueChanged.RemoveAllListeners();
+            wordOptionsDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+
+            DisplayWord(currentResults[0]);
+        }
+        else
+        {
+            ClearHistory();
+            wordSearched.text = "Word not found";
+        }
+    }
 
     public void OnDropdownValueChanged(int index) // Dropdown search updater
     {
@@ -126,6 +151,8 @@ public class DictManager : MonoBehaviour
         jlpt.text = foundWord.jlptLevel;
         longDefinitionAboutTheWordEn.text = foundWord.longDefinitionAboutTheWordEn;
         longDefinitionAboutTheWordJp.text = foundWord.longDefinitionAboutTheWordJp;
+        currentRelatedWord = foundWord.relatedWord;
+        searchRelatedWordText.text = foundWord.relatedWord;
 
         if (foundWord.isTheWordAGivenName)
         {
@@ -190,6 +217,7 @@ public class DictManager : MonoBehaviour
 
     public void ClearHistory() // Clear all textes once the results are null or you go back in the menu.
     {
+        currentRelatedWord = "";
         inputField.text = "";
         wordSearched.text = "";
         kana.text = "";
@@ -234,6 +262,16 @@ public class DictManager : MonoBehaviour
         {
             backButton.SetActive(true);
         }
+
+        if (currentRelatedWord != "")
+        {
+            searchRelatedWordButton.SetActive(true);
+        }
+        else
+        {
+            searchRelatedWordButton.SetActive(false);
+        }
+
     }
 
 
@@ -312,4 +350,5 @@ public class InfoList
     public string example2Alt;
     public string longDefinitionAboutTheWordEn;
     public string longDefinitionAboutTheWordJp;
+    public string relatedWord;
 }

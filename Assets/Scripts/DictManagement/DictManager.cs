@@ -14,31 +14,9 @@ public class DictManager : MonoBehaviour
     public bool isTheWordAGivenName;
     public TMP_Text pitch;
     public TMP_Text wordSearched;
-    public TMP_Text wordType;
-    public TMP_Text wordDef1;
-    public TMP_Text wordDef2;
-    public TMP_Text wordDef3;
-    public TMP_Text wordDef4;
-    public TMP_Text wordDef5;
-    public TMP_Text wordDef6;
-    public TMP_Text wordDef7;
-    public TMP_Text wordDef8;
-    public TMP_Text wordDef9;
-    public TMP_Text wordDef10;
-    public TMP_Text wordDef11;
-    public TMP_Text wordDef12;
-    public TMP_Text wordDef13;
-    public TMP_Text wordDef14;
-    public TMP_Text wordDef15;
-    public TMP_Text wordDef16;
-    public TMP_Text wordDef17;
-    public TMP_Text wordDef18;
-    public TMP_Text wordDef19;
-    public TMP_Text wordDef20;
-    public TMP_Text wordDef21;
-    public TMP_Text wordDef22;
-    public TMP_Text wordDef23;
-    public TMP_Text wordDef24;
+    public TMP_Text wordType1;
+    public TMP_Text wordType2;
+    public TMP_Text[] wordDef;
     public TMP_Text example1;
     public TMP_Text example1Alt;
     public TMP_Text example2;
@@ -94,7 +72,7 @@ public class DictManager : MonoBehaviour
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
     {
         string query = inputField.text.ToLower();
-        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query).ToList();
+        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
 
         if (currentResults.Count > 0)
         {
@@ -126,31 +104,21 @@ public class DictManager : MonoBehaviour
         wordSearched.text = foundWord.word;
         kana.text = foundWord.kana;
         pitch.text = foundWord.pitch;
-        wordType.text = foundWord.wordType;
-        wordDef1.text = foundWord.def1;
-        wordDef2.text = foundWord.def2;
-        wordDef3.text = foundWord.def3;
-        wordDef4.text = foundWord.def4;
-        wordDef5.text = foundWord.def5;
-        wordDef6.text = foundWord.def6;
-        wordDef7.text = foundWord.def7;
-        wordDef8.text = foundWord.def8;
-        wordDef9.text = foundWord.def9;
-        wordDef10.text = foundWord.def10;
-        wordDef11.text = foundWord.def11;
-        wordDef12.text = foundWord.def12;
-        wordDef13.text = foundWord.def13;
-        wordDef14.text = foundWord.def14;
-        wordDef15.text = foundWord.def15;
-        wordDef16.text = foundWord.def16;
-        wordDef17.text = foundWord.def17;
-        wordDef18.text = foundWord.def18;
-        wordDef19.text = foundWord.def19;
-        wordDef20.text = foundWord.def20;
-        wordDef21.text = foundWord.def21;
-        wordDef22.text = foundWord.def22;
-        wordDef23.text = foundWord.def23;
-        wordDef24.text = foundWord.def24;
+        wordType1.text = foundWord.wordType1;
+        wordType2.text = foundWord.wordType2;
+
+        for (int i = 0; i < wordDef.Length; i++)
+        {
+            if (i < foundWord.def.Length)
+            {
+                wordDef[i].text = foundWord.def[i];
+            }
+            else
+            {
+                wordDef[i].text = "";
+            }
+        }
+
         example1.text = foundWord.example1;
         example1Alt.text = foundWord.example1Alt;
         example2.text = foundWord.example2;
@@ -168,21 +136,55 @@ public class DictManager : MonoBehaviour
             givenName.text = "";
         }
 
-        if (wordType.text.ToLower() == "verb")
+        //Word Type 1
+        if (wordType1.text.ToLower() == "verb")
         {
-            wordType.color = Color.red;
+            wordType1.color = Color.red;
         }
-        else if (wordType.text.ToLower() == "noun")
+        else if (wordType1.text.ToLower() == "noun")
         {
-            wordType.color = Color.cyan;
+            wordType1.color = Color.cyan;
         }
-        else if (wordType.text.ToLower() == "adjective")
+        else if (wordType1.text.ToLower() == "na-adjective")
         {
-            wordType.color = Color.yellow;
+            wordType1.color = Color.yellow;
+        }
+        else if (wordType1.text.ToLower() == "i-adjective")
+        {
+            wordType1.color = Color.magenta;
+        }
+        else if (wordType1.text.ToLower() == "suru verb")
+        {
+            wordType1.color = Color.gray;
         }
         else
         {
-            wordType.color = Color.white;
+            wordType1.color = Color.white;
+        }
+        //Word Type 2
+        if (wordType2.text.ToLower() == "verb")
+        {
+            wordType2.color = Color.red;
+        }
+        else if (wordType2.text.ToLower() == "noun")
+        {
+            wordType2.color = Color.cyan;
+        }
+        else if (wordType2.text.ToLower() == "na-adjective")
+        {
+            wordType2.color = Color.yellow;
+        }
+        else if (wordType2.text.ToLower() == "i-adjective")
+        {
+            wordType2.color = Color.magenta;
+        }
+        else if (wordType2.text.ToLower() == "suru verb")
+        {
+            wordType2.color = Color.gray;
+        }
+        else
+        {
+            wordType2.color = Color.white;
         }
     }
 
@@ -191,32 +193,13 @@ public class DictManager : MonoBehaviour
         inputField.text = "";
         wordSearched.text = "";
         kana.text = "";
-        wordDef1.text = "";
-        wordDef2.text = "";
-        wordDef3.text = "";
-        wordDef4.text = "";
-        wordDef5.text = "";
-        wordDef6.text = "";
-        wordDef7.text = "";
-        wordDef8.text = "";
-        wordDef9.text = "";
-        wordDef10.text = "";
-        wordDef11.text = "";
-        wordDef12.text = "";
-        wordDef13.text = "";
-        wordDef14.text = "";
-        wordDef15.text = "";
-        wordDef16.text = "";
-        wordDef17.text = "";
-        wordDef18.text = "";
-        wordDef19.text = "";
-        wordDef20.text = "";
-        wordDef21.text = "";
-        wordDef22.text = "";
-        wordDef23.text = "";
-        wordDef24.text = "";
-        givenName.text = "";
-        wordType.text = "";
+        jlpt.text = "";
+        for (int i = 0; i < wordDef.Length; i++)
+        {
+            wordDef[i].text = "";
+        }
+        wordType1.text = "";
+        wordType2.text = "";
         example1.text = "";
         example1Alt.text = "";
         example2.text = "";
@@ -313,36 +296,16 @@ public class InfoList
 {
     public string word;
     public string kana;
+    public string hiragana;
+    public string alternativeForm;
     public string romaji;
-    public string wordType;
+    public string wordType1;
+    public string wordType2;
     public string pitch;
     public string givenName;
     public bool isTheWordAGivenName;
     public string jlptLevel;
-    public string def1;
-    public string def2;
-    public string def3;
-    public string def4;
-    public string def5;
-    public string def6;
-    public string def7;
-    public string def8;
-    public string def9;
-    public string def10;
-    public string def11;
-    public string def12;
-    public string def13;
-    public string def14;
-    public string def15;
-    public string def16;
-    public string def17;
-    public string def18;
-    public string def19;
-    public string def20;
-    public string def21;
-    public string def22;
-    public string def23;
-    public string def24;
+    public string[] def;
     public string example1;
     public string example1Alt;
     public string example2;

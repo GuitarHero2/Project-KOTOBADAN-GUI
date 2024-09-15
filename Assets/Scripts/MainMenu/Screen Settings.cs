@@ -9,10 +9,13 @@ public class ScreenSettings : MonoBehaviour
     public TMP_Text currentWidth;
     public TMP_Text currentHeight;
 
+    public TMP_Text fullScreenMessage;
+
     void Update()
     {
         currentHeight.text = Screen.height.ToString();
         currentWidth.text = Screen.width.ToString();
+        FullScreenChecker();
     }
 
     public void SetResolutionTo4K()
@@ -38,5 +41,17 @@ public class ScreenSettings : MonoBehaviour
     public void SetResolutionToHD()
     {
         Screen.SetResolution(1280, 720, Screen.fullScreen == false);
+    }
+
+    public void FullScreenChecker()
+    {
+        if (Screen.fullScreen == true)
+        {
+            fullScreenMessage.text = "Fullscreen: ON";
+        }
+        else
+        {
+            fullScreenMessage.text = "Fullscreen: OFF";
+        }
     }
 }

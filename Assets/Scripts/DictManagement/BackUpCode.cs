@@ -350,3 +350,135 @@ public class InfoList
     public string longDefinitionAboutTheWordEn;
     public string longDefinitionAboutTheWordJp;
 }*/
+
+/*using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+using System.Linq;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class QuizMinigame : MonoBehaviour
+{
+    public TMP_InputField answerInputField;
+    public TMP_Text hintText;
+    public TMP_Text feedbackText;
+    public float feedbackDelay;
+    public float timeBeforeWordChanges;
+    public float timeReturner;
+    public int currentWordInIndex;
+    public float fadeDuration;
+
+    private InfoList currentWord;
+    private List<InfoList> wordList;
+
+    // DEBUG
+    public float debugFloat;
+
+    void Start()
+    {
+        wordList = FindObjectOfType<DictManager>().dict.wordList;
+        Debug.Log("Number of words in deck: " + wordList.Count);
+
+        if (wordList.Count > 0)
+        {
+            SelectNewWord();
+        }
+        else
+        {
+            Debug.LogError("The deck is empty!");
+        }
+    }
+    void FixedUpdate()
+    {
+        if (timeBeforeWordChanges >= 0)
+        {
+            timeBeforeWordChanges -= 1 * Time.deltaTime;
+        }
+        else if (timeBeforeWordChanges <= 0)
+        {
+            timeBeforeWordChanges = timeReturner + feedbackDelay;
+            feedbackText.text = "Incorrect. The correct answer was: " + currentWord.hiragana;
+            StartCoroutine(ShowFeedbackAndSelectNewWord());
+        }
+    }
+
+    void Update()
+    {
+        // DEBUG
+        debugFloat = timeBeforeWordChanges;
+
+        if (wordList.Count == 0)
+        {
+            WinScreen();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            CheckAnswer();
+            answerInputField.ActivateInputField();
+        }
+    }
+
+    void SelectNewWord()
+    {
+        currentWordInIndex = Random.Range(0, wordList.Count);
+        currentWord = wordList[currentWordInIndex];
+        hintText.text = currentWord.word;
+        feedbackText.text = "";
+        answerInputField.ActivateInputField();
+    }
+
+    public void CheckAnswer()
+    {
+        string playerAnswer = answerInputField.text;
+
+        if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
+        {
+            StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
+            feedbackText.text = "Correct!";
+            timeBeforeWordChanges = timeReturner + feedbackDelay;
+            wordList.RemoveAt(currentWordInIndex);
+            StartCoroutine(ShowFeedbackAndSelectNewWord());
+        }
+        else
+        {
+            StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
+        }
+    }
+
+    public void WinScreen()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    IEnumerator ShowFeedbackAndSelectNewWord()
+    {
+        yield return new WaitForSeconds(feedbackDelay);
+        SelectNewWord();
+        answerInputField.text = "";
+    }
+    IEnumerator FadeHintColorToWhite(Color popupColor, float duration)
+    {
+        Color endColor = Color.white;
+        float elapsedTime = 0;
+
+        hintText.color = popupColor;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            hintText.color = Color.Lerp(popupColor, endColor, elapsedTime / duration);
+            yield return null;
+        }
+
+        hintText.color = endColor;
+    }
+
+}
+
+
+
+*/

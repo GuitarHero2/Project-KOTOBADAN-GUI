@@ -370,9 +370,11 @@ public class QuizMinigame : MonoBehaviour
     public float timeReturner;
     public int currentWordInIndex;
     public float fadeDuration;
+    public string jlptFilter;
 
     private InfoList currentWord;
     private List<InfoList> wordList;
+    private List<InfoList> usedWords = new List<InfoList>(); 
 
     // DEBUG
     public float debugFloat;
@@ -424,29 +426,55 @@ public class QuizMinigame : MonoBehaviour
 
     void SelectNewWord()
     {
-        currentWordInIndex = Random.Range(0, wordList.Count);
-        currentWord = wordList[currentWordInIndex];
-        hintText.text = currentWord.word;
-        feedbackText.text = "";
-        answerInputField.ActivateInputField();
+        // Filter all words with the same desired JLPT Level.
+        var filteredList = wordList.Where(word => word.jlptLevel == jlptFilter).ToList();
+
+        if (filteredList.Count > 0)
+        {
+            // This makes sure that any words repeats.
+            var availableWords = filteredList.Except(usedWords).ToList();
+
+            if (availableWords.Count == 0)
+            {
+                WinScreen();
+            }
+
+            currentWordInIndex = Random.Range(0, availableWords.Count);
+            currentWord = availableWords[currentWordInIndex];
+            hintText.text = currentWord.word;
+            feedbackText.text = "";
+            answerInputField.ActivateInputField();
+        }
+        else
+        {
+            Debug.LogError("No words available for the selected JLPT level!");
+        }
     }
 
     public void CheckAnswer()
     {
         string playerAnswer = answerInputField.text;
+        if (timeBeforeWordChanges < timeReturner)
+        {
+            if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
+            {
+                StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
+                feedbackText.text = "Correct!";
+                usedWords.Add(currentWord); // Mark any new word as used if answered correctly.
+                timeBeforeWordChanges = timeReturner + feedbackDelay;
+                StartCoroutine(ShowFeedbackAndSelectNewWord());
+            }
+            else
+            {
+                StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
+            }
+        }
+    }
 
-        if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
-        {
-            StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
-            feedbackText.text = "Correct!";
-            timeBeforeWordChanges = timeReturner + feedbackDelay;
-            wordList.RemoveAt(currentWordInIndex);
-            StartCoroutine(ShowFeedbackAndSelectNewWord());
-        }
-        else
-        {
-            StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
-        }
+    public void SetJlptFilter(string newJlptFilter)
+    {
+        jlptFilter = newJlptFilter;
+        SelectNewWord(); // Update the method with the filter.
     }
 
     public void WinScreen()
@@ -460,6 +488,7 @@ public class QuizMinigame : MonoBehaviour
         SelectNewWord();
         answerInputField.text = "";
     }
+
     IEnumerator FadeHintColorToWhite(Color popupColor, float duration)
     {
         Color endColor = Color.white;
@@ -476,9 +505,5 @@ public class QuizMinigame : MonoBehaviour
 
         hintText.color = endColor;
     }
-
 }
-
-
-
 */

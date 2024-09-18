@@ -14,6 +14,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameModes/N5 Minigame.unity
     guid: 020fd58e485800e4bb5e46c29fdc216f
+  - enabled: 1
+    path: Assets/Scenes/GameModes/N4 Minigame.unity
+    guid: a9d644bdb1e15ad46adbec0fb856ef3a
+  - enabled: 1
+    path: Assets/Scenes/GameModes/N3 Minigame.unity
+    guid: cb57e934bc076ce4b8446719cc47f5fa
+  - enabled: 1
+    path: Assets/Scenes/GameModes/N2 Minigame.unity
+    guid: 18453cf737f59804bbf969e874ef906c
+  - enabled: 1
+    path: Assets/Scenes/GameModes/N1 Minigame.unity
+    guid: bddeda2ed3f6a4149a2bd4f9883bab49
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 26b09a8e21f14d44f9dc789b3108da6b, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: 00695203ed5680947908bed062fc4598, type: 2}

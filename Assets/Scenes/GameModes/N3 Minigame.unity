@@ -2985,7 +2985,7 @@ MonoBehaviour:
   timeReturner: 10
   currentWordInIndex: 0
   fadeDuration: 0.5
-  jlptFilter: JLPT N5
+  jlptFilter: JLPT N3
   meaningText:
   - {fileID: 2104414367}
   - {fileID: 1364208292}

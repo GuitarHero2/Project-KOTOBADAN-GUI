@@ -21,13 +21,16 @@ public class QuizMinigame : MonoBehaviour
 
     private InfoList currentWord;
     private List<InfoList> wordList;
-    private List<InfoList> usedWords = new List<InfoList>(); 
+    private List<InfoList> usedWords = new List<InfoList>();
+    public TMP_Text[] meaningText;
+
 
     // DEBUG
     public float debugFloat;
 
     void Start()
     {
+
         wordList = FindObjectOfType<DictManager>().dict.wordList;
         Debug.Log("Number of words in deck: " + wordList.Count);
 
@@ -101,18 +104,21 @@ public class QuizMinigame : MonoBehaviour
     public void CheckAnswer()
     {
         string playerAnswer = answerInputField.text;
-
-        if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
+        if (timeBeforeWordChanges < timeReturner)
         {
-            StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
-            feedbackText.text = "Correct!";
-            usedWords.Add(currentWord); // Mark any new word as used if answered correctly.
-            timeBeforeWordChanges = timeReturner + feedbackDelay;
-            StartCoroutine(ShowFeedbackAndSelectNewWord());
-        }
-        else
-        {
-            StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
+            if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
+            {
+                StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
+                feedbackText.text = "Correct!";
+                usedWords.Add(currentWord); // Mark any new word as used if answered correctly.
+                timeBeforeWordChanges = timeReturner + feedbackDelay;
+                StartCoroutine(ShowFeedbackAndSelectNewWord());
+                UpdateWordMeanings();
+            }
+            else
+            {
+                StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
+            }
         }
     }
 
@@ -127,9 +133,28 @@ public class QuizMinigame : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void UpdateWordMeanings()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (currentWord.def[i] == null)
+            {
+                meaningText[i].text = "";
+            }
+            else
+            {
+                meaningText[i].text = currentWord.def[i];
+            }
+        }
+    }
+
     IEnumerator ShowFeedbackAndSelectNewWord()
     {
         yield return new WaitForSeconds(feedbackDelay);
+        for (int i = 0; i < 3; i++)
+        {
+            meaningText[i].text = "";
+        }
         SelectNewWord();
         answerInputField.text = "";
     }

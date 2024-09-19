@@ -11,6 +11,17 @@ public class MainMenuButtonBehavior : MonoBehaviour
         Debug.Log("The program closed successfully!");
     }
 
+    public void PauseButton()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeButton()
+    {
+        Time.timeScale = 1;
+    }
+
+
     public void StartN5Quiz()
     {
         SceneManager.LoadScene(2);
@@ -31,9 +42,14 @@ public class MainMenuButtonBehavior : MonoBehaviour
     {
         SceneManager.LoadScene(6);
     }
+    public void StartAllInQuiz()
+    {
+        SceneManager.LoadScene(7);
+    }
 
     public void ReturnToMainMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(1);
     }
 }

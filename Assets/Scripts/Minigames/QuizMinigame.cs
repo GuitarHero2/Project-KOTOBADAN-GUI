@@ -75,37 +75,63 @@ public class QuizMinigame : MonoBehaviour
 
     void SelectNewWord()
     {
-        // Filter all words with the same desired JLPT Level.
-        var filteredList = wordList.Where(word => word.jlptLevel == jlptFilter).ToList();
-
-        if (filteredList.Count > 0)
+        if (jlptFilter == "")
         {
-            // This makes sure that any words repeats.
-            var availableWords = filteredList.Except(usedWords).ToList();
-
-            if (availableWords.Count == 0)
+            if (wordList.Count > 0)
             {
-                WinScreen();
-            }
+                // This makes sure that any words repeats.
+                var availableWords = wordList.Except(usedWords).ToList();
 
-            currentWordInIndex = Random.Range(0, availableWords.Count);
-            currentWord = availableWords[currentWordInIndex];
-            hintText.text = currentWord.word;
-            feedbackText.text = "";
-            answerInputField.ActivateInputField();
+                if (availableWords.Count == 0)
+                {
+                    WinScreen();
+                }
+
+                currentWordInIndex = Random.Range(0, availableWords.Count);
+                currentWord = availableWords[currentWordInIndex];
+                hintText.text = currentWord.word;
+                feedbackText.text = "";
+                answerInputField.ActivateInputField();
+            }
+            else
+            {
+                Debug.LogError("No words available for the selected JLPT level!");
+            }
         }
-        else
+        else if (jlptFilter != "")
         {
-            Debug.LogError("No words available for the selected JLPT level!");
+            // Filter all words with the same desired JLPT Level.
+            var filteredList = wordList.Where(word => word.jlptLevel == jlptFilter).ToList();
+
+            if (filteredList.Count > 0)
+            {
+                // This makes sure that any words repeats.
+                var availableWords = filteredList.Except(usedWords).ToList();
+
+                if (availableWords.Count == 0)
+                {
+                    WinScreen();
+                }
+
+                currentWordInIndex = Random.Range(0, availableWords.Count);
+                currentWord = availableWords[currentWordInIndex];
+                hintText.text = currentWord.word;
+                feedbackText.text = "";
+                answerInputField.ActivateInputField();
+            }
+            else
+            {
+                Debug.LogError("No words available for the selected JLPT level!");
+            }
         }
     }
 
     public void CheckAnswer()
     {
-        string playerAnswer = answerInputField.text;
+        string playerAnswer = answerInputField.text.ToLower();
         if (timeBeforeWordChanges < timeReturner)
         {
-            if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
+            if (playerAnswer == currentWord.word.ToLower() || playerAnswer == currentWord.kana.ToLower() || playerAnswer == currentWord.romaji.ToLower())
             {
                 StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
                 feedbackText.text = "Correct!";

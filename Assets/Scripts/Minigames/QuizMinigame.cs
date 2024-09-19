@@ -30,7 +30,6 @@ public class QuizMinigame : MonoBehaviour
 
     void Start()
     {
-
         wordList = FindObjectOfType<DictManager>().dict.wordList;
         Debug.Log("Number of words in deck: " + wordList.Count);
 

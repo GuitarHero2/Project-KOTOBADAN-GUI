@@ -15,6 +15,22 @@ public class MainMenuButtonBehavior : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
+    public void StartN4Quiz()
+    {
+        SceneManager.LoadScene(3);
+    }
+    public void StartN3Quiz()
+    {
+        SceneManager.LoadScene(4);
+    }
+    public void StartN2Quiz()
+    {
+        SceneManager.LoadScene(5);
+    }
+    public void StartN1Quiz()
+    {
+        SceneManager.LoadScene(6);
+    }
 
     public void ReturnToMainMenu()
     {

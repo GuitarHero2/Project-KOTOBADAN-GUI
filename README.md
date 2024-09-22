@@ -6,12 +6,9 @@
 > Take in consideration that this project is still under development and haven't still been released. Don't try to download this program from any other sources other than this Github.
 
  
- # TUI Version (Console App Application)
+ # TUI Version (Console App Application) (DEPRECATED)
 
  ### This version is based by the Windows Terminal Application and it's meant to be as light-weighted as possible. Use this version if are working under low-end specs. To download this version, please refer to this [Github Link](https://github.com/GuitarHero2/Project-KOTOBADAN)
-
-> [!CAUTION]
-> This version has been temporarily paused since I will be working on the GUI version, once the GUI version of the program catches up with the console one, I will be actively working for both.
 
 # GUI Version (Graphical User Interface)
 

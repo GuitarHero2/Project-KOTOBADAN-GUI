@@ -18,7 +18,7 @@
 
 ### I intent to add the following tools:
 
-* Quiz Game (Kinda what the discord bot KOTOBA does)
+* Quiz Game (Kinda what the discord bot [KOTOBA](https://kotobaweb.com/bot) does)
 * Dictionaries for both grammar and words.
 * Support for varios languages (For now, I will stick with English, Spanish, Swedish and Japanese)
 * Content recommendation to (try to) boost your language journey.

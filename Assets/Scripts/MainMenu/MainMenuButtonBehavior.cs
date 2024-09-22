@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtonBehavior : MonoBehaviour
 {
+    public int currentScene;
+
     public void QuitProgram()
     {
         Application.Quit();
@@ -18,6 +20,12 @@ public class MainMenuButtonBehavior : MonoBehaviour
 
     public void ResumeButton()
     {
+        Time.timeScale = 1;
+    }
+
+    public void ReloadCurrentScene()
+    {
+        SceneManager.LoadScene(currentScene);
         Time.timeScale = 1;
     }
 

@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 
 public class QuizMinigame : MonoBehaviour
 {
+    public int currentScore;
+    public TMP_Text scoreText;
+
     public TMP_InputField answerInputField;
     public TMP_Text hintText;
     public TMP_Text feedbackText;
@@ -19,14 +22,14 @@ public class QuizMinigame : MonoBehaviour
     public float fadeDuration;
     public string jlptFilter;
 
-    private InfoList currentWord;
+    public InfoList currentWord;
     private List<InfoList> wordList;
     private List<InfoList> usedWords = new List<InfoList>();
     public TMP_Text[] meaningText;
 
 
     // DEBUG
-    public float debugFloat;
+    //public float debugFloat;
 
     void Start()
     {
@@ -44,6 +47,8 @@ public class QuizMinigame : MonoBehaviour
     }
     void FixedUpdate()
     {
+        scoreText.text = currentScore.ToString();
+
         if (timeBeforeWordChanges >= 0)
         {
             timeBeforeWordChanges -= 1 * Time.deltaTime;
@@ -59,7 +64,7 @@ public class QuizMinigame : MonoBehaviour
     void Update()
     {
         // DEBUG
-        debugFloat = timeBeforeWordChanges;
+        //debugFloat = timeBeforeWordChanges;
 
         if (wordList.Count == 0)
         {
@@ -133,7 +138,8 @@ public class QuizMinigame : MonoBehaviour
         {
             if (playerAnswer == currentWord.word.ToLower() || playerAnswer == currentWord.kana.ToLower() || playerAnswer == currentWord.romaji.ToLower())
             {
-                StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
+                StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration, hintText));
+                currentScore++;
                 feedbackText.text = "Correct!";
                 usedWords.Add(currentWord); // Mark any new word as used if answered correctly.
                 timeBeforeWordChanges = timeReturner + feedbackDelay;
@@ -142,7 +148,7 @@ public class QuizMinigame : MonoBehaviour
             }
             else
             {
-                StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
+                StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration, hintText));
             }
         }
     }
@@ -184,20 +190,20 @@ public class QuizMinigame : MonoBehaviour
         answerInputField.text = "";
     }
 
-    IEnumerator FadeHintColorToWhite(Color popupColor, float duration)
+    IEnumerator FadeHintColorToWhite(Color popupColor, float duration, TMP_Text text)
     {
         Color endColor = Color.white;
         float elapsedTime = 0;
 
-        hintText.color = popupColor;
+        text.color = popupColor;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            hintText.color = Color.Lerp(popupColor, endColor, elapsedTime / duration);
+            text.color = Color.Lerp(popupColor, endColor, elapsedTime / duration);
             yield return null;
         }
 
-        hintText.color = endColor;
+        text.color = endColor;
     }
 }

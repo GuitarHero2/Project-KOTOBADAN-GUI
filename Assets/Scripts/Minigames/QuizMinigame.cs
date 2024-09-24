@@ -23,13 +23,36 @@ public class QuizMinigame : MonoBehaviour
     public string jlptFilter;
 
     public InfoList currentWord;
-    private List<InfoList> wordList;
-    private List<InfoList> usedWords = new List<InfoList>();
+    public List<InfoList> wordList;
+    public List<InfoList> usedWords = new List<InfoList>();
     public TMP_Text[] meaningText;
+
+   // public DeckFQG deckFQG = new DeckFQG();
 
 
     // DEBUG
     //public float debugFloat;
+
+    /*public void SaveToJson()
+    {
+        string dictData = JsonUtility.ToJson(deckFQG);
+        string fileLocation = Application.persistentDataPath + "/CustomDeckFQG.json";
+        File.WriteAllText(fileLocation, dictData);
+    }*/
+
+    /*public void LoadToJson()
+    {
+        string fileLocation = Application.persistentDataPath + "/CustomDeckFQG.json";
+        if (File.Exists(fileLocation))
+        {
+            string dictData = File.ReadAllText(fileLocation);
+            deckFQG = JsonUtility.FromJson<DeckFQG>(dictData);
+        }
+        else
+        {
+            SaveToJson();
+        }
+    }*/
 
     void Start()
     {
@@ -57,6 +80,7 @@ public class QuizMinigame : MonoBehaviour
         {
             timeBeforeWordChanges = timeReturner + feedbackDelay;
             feedbackText.text = "Incorrect. The correct answer was: " + currentWord.hiragana;
+            //SaveMissedWordInCustomDeck();
             StartCoroutine(ShowFeedbackAndSelectNewWord());
         }
     }
@@ -206,4 +230,15 @@ public class QuizMinigame : MonoBehaviour
 
         text.color = endColor;
     }
+
+    /*public void SaveMissedWordInCustomDeck()
+    {
+        SaveToJson();
+    }*/
+
+   /* [System.Serializable]
+    public class DeckFQG
+    {
+        public List<InfoList> wordList = new List<InfoList>();
+    }*/
 }

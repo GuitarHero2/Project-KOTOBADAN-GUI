@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -28,14 +28,17 @@ public class CustomDictManagerForQuizGame : MonoBehaviour
     public string currentRelatedWord;
 
 
-    private List<InfoListFQG> current = new List<InfoListFQG>();
+    public List<InfoListFQG> current = new List<InfoListFQG>();
+    public InfoListFQG wordAdded = new InfoListFQG();
+    public InfoList ogInfoList = new InfoList();
 
-    public DeckFQG deck = new DeckFQG();
+    public DeckFQG deckFQG = new DeckFQG();
     public QuizMinigame quizMinigame;
+    
 
     public void SaveToJson()
     {
-        string dictData = JsonUtility.ToJson(deck);
+        string dictData = JsonUtility.ToJson(deckFQG);
         string fileLocation = Application.persistentDataPath + "/CustomDeckFQG.json";
         File.WriteAllText(fileLocation, dictData);
     }
@@ -46,7 +49,7 @@ public class CustomDictManagerForQuizGame : MonoBehaviour
         if (File.Exists(fileLocation))
         {
             string dictData = File.ReadAllText(fileLocation);
-            deck = JsonUtility.FromJson<DeckFQG>(dictData);
+            deckFQG = JsonUtility.FromJson<DeckFQG>(dictData);
         }
         else
         {
@@ -56,12 +59,13 @@ public class CustomDictManagerForQuizGame : MonoBehaviour
 
     public void SaveWordIntoDeck()
     {
-        // For later
+
     }
 
     void Start()
     {
         quizMinigame = gameObject.GetComponent<QuizMinigame>();
+        
 
         try
         {
@@ -106,4 +110,4 @@ public class InfoListFQG
     public string longDefinitionAboutTheWordEn;
     public string longDefinitionAboutTheWordJp;
     public string relatedWord;
-}
+}*/

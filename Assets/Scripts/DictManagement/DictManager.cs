@@ -252,6 +252,12 @@ public class DictManager : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SearchWord();
+            inputField.ActivateInputField();
+        }
+
         pageNumberText.text = pageNumber.ToString();
 
         if (pageNumber <= 1)

@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 public class MainMenuButtonBehavior : MonoBehaviour
 {
     public int currentScene;
+    //public Animator mainMenuAnimator;
+    //public Animator[] otherMenuAnimators;
+    public float cooldownForClicks;
+
 
     public void QuitProgram()
     {
@@ -60,4 +64,10 @@ public class MainMenuButtonBehavior : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(1);
     }
+
+    IEnumerator cooldown()
+    {
+        yield return new WaitForSeconds(cooldownForClicks);
+    }
 }
+

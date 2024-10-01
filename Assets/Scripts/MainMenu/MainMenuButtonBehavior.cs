@@ -1,14 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuButtonBehavior : MonoBehaviour
 {
     public int currentScene;
-    //public Animator mainMenuAnimator;
-    //public Animator[] otherMenuAnimators;
-    public float cooldownForClicks;
+    public Animator mainMenuAnimator;
+    public Animator[] otherMenuAnimators;
+    public GameObject mainMenuGO;
+    public float timer;
+
+
+    // IN CASE OF BUGS WITH THE MAIN MENU ANIMATIONS
+
+    /*void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R) && mainMenuGO.transform.position.x != 6.217656)
+        {
+            mainMenuAnimator.SetTrigger("Open");
+
+            for (int i = 0; i < otherMenuAnimators.Length; i++)
+            {
+                otherMenuAnimators[i].SetTrigger("Close");
+            }
+        }
+        else if (mainMenuGO.transform.position.x == 6.217656)
+        {
+
+        }
+
+    }*/
 
 
     public void QuitProgram()
@@ -67,7 +92,7 @@ public class MainMenuButtonBehavior : MonoBehaviour
 
     IEnumerator cooldown()
     {
-        yield return new WaitForSeconds(cooldownForClicks);
+        yield return new WaitForSeconds(timer);
     }
 }
 

@@ -76,7 +76,24 @@ public class DictManager : MonoBehaviour
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
     {
         string query = inputField.text.ToLower();
-        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
+        currentResults = dict.wordList.Where(word => word.word == query || word.kana == query || word.romaji.ToLower() == query || word.hiragana == query || word.alternativeForm.ToLower() == query ||
+        word.teFormInflection  == query || word.teFormInflectionRomaji.ToLower() == query ||
+        word.nonPastNegativeInflection == query || word.nonPastNegativeInflectionRomaji.ToLower() == query ||
+        word.nonPastNegativeInflectionPolite == query || word.nonPastNegativeInflectionPoliteRomaji.ToLower() == query ||
+        word.pastInflection == query || word.pastInflectionRomaji.ToLower() == query ||
+        word.pastNegativeInflection == query || word.pastNegativeInflectionRomaji == query ||
+        word.pastInflectionPolite == query || word.pastInflectionPoliteRomaji.ToLower() == query ||
+        word.pastNegativeInflectionPolite == query || word.pastNegativeInflectionPoliteRomaji.ToLower() == query ||
+        word.potentialInflection == query || word.potentialInflectionRomaji.ToLower() == query ||
+        word.potentialNegativeInflection == query || word.potentialNegativeInflectionRomaji.ToLower() == query ||
+        word.passiveInflection == query || word.passiveInflectionRomaji.ToLower() == query ||
+        word.passiveNegativeInflection == query || word.passiveNegativeInflectionRomaji.ToLower() == query ||
+        word.causativeInflection == query || word.causativeInflectionRomaji.ToLower() == query ||
+        word.causativeNegativeInflection == query || word.causativeNegativeInflectionRomaji.ToLower() == query ||
+        word.causativePassiveInflection == query || word.causativePassiveInflectionRomaji.ToLower() == query ||
+        word.causativePassiveNegativeInflection == query || word.causativePassiveNegativeInflectionRomaji.ToLower() == query ||
+        word.imperativeInflection == query || word.imperativeInflectionRomaji.ToLower() == query ||
+        word.imperativeNegativeInflection == query || word.imperativeNegativeInflectionRomaji.ToLower() == query).ToList();
 
         if (currentResults.Count > 0)
         {
@@ -357,4 +374,45 @@ public class InfoList
     public string longDefinitionAboutTheWordEn;
     public string longDefinitionAboutTheWordJp;
     public string relatedWord;
+    public bool isTheWordAVerb;
+    public string nonPastInflection;
+    public string nonPastInflectionRomaji;
+    public string nonPastNegativeInflection;
+    public string nonPastNegativeInflectionRomaji;
+    public string nonPastInflectionPolite;
+    public string nonPastInflectionPoliteRomaji;
+    public string nonPastNegativeInflectionPolite;
+    public string nonPastNegativeInflectionPoliteRomaji;
+    public string pastInflection;
+    public string pastInflectionRomaji;
+    public string pastNegativeInflection;
+    public string pastNegativeInflectionRomaji;
+    public string pastInflectionPolite;
+    public string pastInflectionPoliteRomaji;
+    public string pastNegativeInflectionPolite;
+    public string pastNegativeInflectionPoliteRomaji;
+    public string teFormInflection;
+    public string teFormInflectionRomaji;
+    public string teFormInflectionPolite;
+    public string teFormInflectionPoliteRomaji;
+    public string potentialInflection;
+    public string potentialInflectionRomaji;
+    public string potentialNegativeInflection;
+    public string potentialNegativeInflectionRomaji;
+    public string passiveInflection;
+    public string passiveInflectionRomaji;
+    public string passiveNegativeInflection;
+    public string passiveNegativeInflectionRomaji;
+    public string causativeInflection;
+    public string causativeInflectionRomaji;
+    public string causativeNegativeInflection;
+    public string causativeNegativeInflectionRomaji;
+    public string causativePassiveInflection;
+    public string causativePassiveInflectionRomaji;
+    public string causativePassiveNegativeInflection;
+    public string causativePassiveNegativeInflectionRomaji;
+    public string imperativeInflection;
+    public string imperativeInflectionRomaji;
+    public string imperativeNegativeInflection;
+    public string imperativeNegativeInflectionRomaji;
 }

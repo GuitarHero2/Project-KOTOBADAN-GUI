@@ -26,6 +26,11 @@ public class CustomDict : MonoBehaviour
     public TMP_Text pageNumberText;
     public string currentRelatedWord;
 
+    public TMP_InputField wordIF;
+    public TMP_InputField kanaIF;
+    public TMP_InputField pitchIF;
+    public TMP_InputField wordTypeIF;
+
     public int pageNumber = 1;
     public GameObject backButton;
     public GameObject searchRelatedWordButton;
@@ -35,7 +40,10 @@ public class CustomDict : MonoBehaviour
     private List<InfoListFCJ> currentResults = new List<InfoListFCJ>();
 
     public CustomJisho dict = new CustomJisho();
+    List<InfoListFCJ> newWord = new();
+    public int newWordNumber;
 
+    public int currentDictWordAmount;
     public void SaveToJson()
     {
         string dictData = JsonUtility.ToJson(dict);
@@ -55,6 +63,12 @@ public class CustomDict : MonoBehaviour
         {
             SaveToJson();
         }
+    }
+
+    public void AddNewWord()
+    {
+        dict.wordList.Insert(currentDictWordAmount, new InfoListFCJ());
+        dict.wordList[currentDictWordAmount].word = wordIF.text;
     }
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
@@ -253,6 +267,8 @@ public class CustomDict : MonoBehaviour
     }
     void Update()
     {
+        currentDictWordAmount = dict.wordList.Count;
+
         if (Input.GetKeyDown(KeyCode.Return))
         {
             SearchWord();

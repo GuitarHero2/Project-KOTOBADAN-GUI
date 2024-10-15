@@ -29,7 +29,17 @@ public class CustomDict : MonoBehaviour
     public TMP_InputField wordIF;
     public TMP_InputField kanaIF;
     public TMP_InputField pitchIF;
-    public TMP_InputField wordTypeIF;
+    public TMP_InputField jlptLevelIF;
+    public TMP_InputField wordType1IF;
+    public TMP_InputField wordType2IF;
+    public TMP_InputField relatedWordIF;
+    public TMP_InputField[] wordDefIF;
+    public TMP_InputField example1JpIF;
+    public TMP_InputField example1EnIF;
+    public TMP_InputField example2JpIF;
+    public TMP_InputField example2EnIF;
+    public TMP_InputField longDefForWordJpIF;
+    public TMP_InputField longDefForWordEnIF;
 
     public int pageNumber = 1;
     public GameObject backButton;
@@ -40,9 +50,6 @@ public class CustomDict : MonoBehaviour
     private List<InfoListFCJ> currentResults = new List<InfoListFCJ>();
 
     public CustomJisho dict = new CustomJisho();
-    List<InfoListFCJ> newWord = new();
-    public int newWordNumber;
-
     public int currentDictWordAmount;
     public void SaveToJson()
     {
@@ -69,6 +76,20 @@ public class CustomDict : MonoBehaviour
     {
         dict.wordList.Insert(currentDictWordAmount, new InfoListFCJ());
         dict.wordList[currentDictWordAmount].word = wordIF.text;
+        dict.wordList[currentDictWordAmount].kana = kanaIF.text;
+        dict.wordList[currentDictWordAmount].pitch = pitchIF.text;
+        dict.wordList[currentDictWordAmount].jlptLevel = jlptLevelIF.text;
+        dict.wordList[currentDictWordAmount].wordType1 = wordType1IF.text;
+        dict.wordList[currentDictWordAmount].wordType2 = wordType2IF.text;
+        dict.wordList[currentDictWordAmount].relatedWord = relatedWordIF.text;
+        dict.wordList[currentDictWordAmount].def[0] = wordDefIF[0].text;
+        dict.wordList[currentDictWordAmount].example1 = example1JpIF.text;
+        dict.wordList[currentDictWordAmount].example1Alt = example1EnIF.text;
+        dict.wordList[currentDictWordAmount].example2 = example2JpIF.text;
+        dict.wordList[currentDictWordAmount].example2Alt = example2EnIF.text;
+        dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordEn = longDefForWordEnIF.text;
+        dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordJp = longDefForWordJpIF.text;
+
     }
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.

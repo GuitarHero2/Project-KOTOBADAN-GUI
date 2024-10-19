@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CustomDict : MonoBehaviour
@@ -25,6 +26,7 @@ public class CustomDict : MonoBehaviour
     public TMP_Text longDefinitionAboutTheWordJp;
     public TMP_Text pageNumberText;
     public string currentRelatedWord;
+    public bool isTheWordAVerb;
 
     public TMP_InputField wordIF;
     public TMP_InputField kanaIF;
@@ -82,14 +84,20 @@ public class CustomDict : MonoBehaviour
         dict.wordList[currentDictWordAmount].wordType1 = wordType1IF.text;
         dict.wordList[currentDictWordAmount].wordType2 = wordType2IF.text;
         dict.wordList[currentDictWordAmount].relatedWord = relatedWordIF.text;
-        dict.wordList[currentDictWordAmount].def[0] = wordDefIF[0].text;
+
+        dict.wordList[currentDictWordAmount].def = new string[wordDefIF.Length];
+
+        for (int i = 0; i < wordDefIF.Length; i++)
+        {
+            dict.wordList[currentDictWordAmount].def[i] = wordDefIF[i].text;
+        }
+
         dict.wordList[currentDictWordAmount].example1 = example1JpIF.text;
         dict.wordList[currentDictWordAmount].example1Alt = example1EnIF.text;
         dict.wordList[currentDictWordAmount].example2 = example2JpIF.text;
         dict.wordList[currentDictWordAmount].example2Alt = example2EnIF.text;
         dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordEn = longDefForWordEnIF.text;
         dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordJp = longDefForWordJpIF.text;
-
     }
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
@@ -296,16 +304,6 @@ public class CustomDict : MonoBehaviour
             inputField.ActivateInputField();
         }
 
-        pageNumberText.text = pageNumber.ToString();
-
-        if (pageNumber <= 1)
-        {
-            backButton.SetActive(false);
-        }
-        else
-        {
-            backButton.SetActive(true);
-        }
 
         if (currentRelatedWord != "")
         {

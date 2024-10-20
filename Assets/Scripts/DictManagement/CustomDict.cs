@@ -24,7 +24,6 @@ public class CustomDict : MonoBehaviour
     public TMP_Text jlpt;
     public TMP_Text longDefinitionAboutTheWordEn;
     public TMP_Text longDefinitionAboutTheWordJp;
-    public TMP_Text pageNumberText;
     public string currentRelatedWord;
     public bool isTheWordAVerb;
 
@@ -42,8 +41,11 @@ public class CustomDict : MonoBehaviour
     public TMP_InputField example2EnIF;
     public TMP_InputField longDefForWordJpIF;
     public TMP_InputField longDefForWordEnIF;
+    public TMP_InputField romajiIF;
+    public TMP_InputField hiraganaIF;
+    public TMP_InputField alternativeFormIF;
 
-    public int pageNumber = 1;
+
     public GameObject backButton;
     public GameObject searchRelatedWordButton;
     public TMP_Text searchRelatedWordText;
@@ -98,6 +100,9 @@ public class CustomDict : MonoBehaviour
         dict.wordList[currentDictWordAmount].example2Alt = example2EnIF.text;
         dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordEn = longDefForWordEnIF.text;
         dict.wordList[currentDictWordAmount].longDefinitionAboutTheWordJp = longDefForWordJpIF.text;
+        dict.wordList[currentDictWordAmount].romaji = romajiIF.text;
+        dict.wordList[currentDictWordAmount].hiragana = hiraganaIF.text;
+        dict.wordList[currentDictWordAmount].alternativeForm = alternativeFormIF.text;
     }
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.

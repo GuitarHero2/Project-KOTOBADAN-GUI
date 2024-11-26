@@ -1216,6 +1216,9 @@ MonoBehaviour:
   longDefinitionAboutTheWordJp: {fileID: 0}
   pageNumberText: {fileID: 1087668590}
   currentRelatedWord: 
+  isTheWordAVerb: 0
+  verbInflections: []
+  showVerbInflectionsButton: {fileID: 0}
   pageNumber: 1
   backButton: {fileID: 1087668589}
   searchRelatedWordButton: {fileID: 1087668589}
@@ -1226,6 +1229,7 @@ MonoBehaviour:
   line4: {fileID: 0}
   line5: {fileID: 0}
   line6: {fileID: 0}
+  defScrollbar: {fileID: 0}
   distanceBetweenMovement: 17.8
   wordOptionsDropdown: {fileID: 0}
   dict:
@@ -1786,6 +1790,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentScene: 7
+  mainMenuAnimator: {fileID: 0}
+  otherMenuAnimators: []
+  mainMenuGO: {fileID: 0}
+  timer: 0
 --- !u!1 &1031403754
 GameObject:
   m_ObjectHideFlags: 0
@@ -3490,6 +3498,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1819749784}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1586313426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3778,6 +3798,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1819749784}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1819749787
 MonoBehaviour:
@@ -4220,6 +4252,47 @@ MonoBehaviour:
     longDefinitionAboutTheWordEn: 
     longDefinitionAboutTheWordJp: 
     relatedWord: 
+    isTheWordAVerb: 0
+    nonPastInflection: 
+    nonPastInflectionRomaji: 
+    nonPastNegativeInflection: 
+    nonPastNegativeInflectionRomaji: 
+    nonPastInflectionPolite: 
+    nonPastInflectionPoliteRomaji: 
+    nonPastNegativeInflectionPolite: 
+    nonPastNegativeInflectionPoliteRomaji: 
+    pastInflection: 
+    pastInflectionRomaji: 
+    pastNegativeInflection: 
+    pastNegativeInflectionRomaji: 
+    pastInflectionPolite: 
+    pastInflectionPoliteRomaji: 
+    pastNegativeInflectionPolite: 
+    pastNegativeInflectionPoliteRomaji: 
+    teFormInflection: 
+    teFormInflectionRomaji: 
+    teFormInflectionNegative: 
+    teFormInflectionNegativeRomaji: 
+    potentialInflection: 
+    potentialInflectionRomaji: 
+    potentialNegativeInflection: 
+    potentialNegativeInflectionRomaji: 
+    passiveInflection: 
+    passiveInflectionRomaji: 
+    passiveNegativeInflection: 
+    passiveNegativeInflectionRomaji: 
+    causativeInflection: 
+    causativeInflectionRomaji: 
+    causativeNegativeInflection: 
+    causativeNegativeInflectionRomaji: 
+    causativePassiveInflection: 
+    causativePassiveInflectionRomaji: 
+    causativePassiveNegativeInflection: 
+    causativePassiveNegativeInflectionRomaji: 
+    imperativeInflection: 
+    imperativeInflectionRomaji: 
+    imperativeNegativeInflection: 
+    imperativeNegativeInflectionRomaji: 
   wordList: []
   usedWords: []
   meaningText:

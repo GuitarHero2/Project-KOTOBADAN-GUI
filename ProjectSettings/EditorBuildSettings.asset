@@ -13,19 +13,19 @@ EditorBuildSettings:
     guid: 4d27a159f04b7a54fab9f2fe2d5a60ff
   - enabled: 1
     path: Assets/Scenes/GameModes/N5 Minigame.unity
-    guid: 020fd58e485800e4bb5e46c29fdc216f
+    guid: f304b32696639c043aaac7d21a59c8f1
   - enabled: 1
     path: Assets/Scenes/GameModes/N4 Minigame.unity
-    guid: a9d644bdb1e15ad46adbec0fb856ef3a
+    guid: e18453ed05b8a3b48b28b91424241904
   - enabled: 1
     path: Assets/Scenes/GameModes/N3 Minigame.unity
-    guid: cb57e934bc076ce4b8446719cc47f5fa
+    guid: 574d6eda21876cf43b17b97a5d882ed6
   - enabled: 1
     path: Assets/Scenes/GameModes/N2 Minigame.unity
-    guid: 18453cf737f59804bbf969e874ef906c
+    guid: a7d1e3eb5e7ca234a857d8ef90b3fc21
   - enabled: 1
     path: Assets/Scenes/GameModes/N1 Minigame.unity
-    guid: bddeda2ed3f6a4149a2bd4f9883bab49
+    guid: 2c39b60ea9d06fe4b82ec04389f10fb5
   - enabled: 1
     path: Assets/Scenes/GameModes/All-In deck.unity
     guid: a9b55404724d5274ab749465fdf75308

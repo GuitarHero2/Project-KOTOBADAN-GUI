@@ -81,6 +81,8 @@ public class DictManager : MonoBehaviour
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
     {
+        ResetScrollbar();
+
         string query = inputField.text.ToLower();
         currentResults = dict.wordList.Where(word => word.word == query || word.kana == query || word.romaji.ToLower() == query || word.hiragana == query || word.alternativeForm.ToLower() == query ||
         word.teFormInflection  == query || word.teFormInflectionRomaji.ToLower() == query ||
@@ -177,6 +179,7 @@ public class DictManager : MonoBehaviour
         isTheWordAVerb = foundWord.isTheWordAVerb;
         if (isTheWordAVerb == true)
         {
+            showVerbInflectionsButton.SetActive(true);
             verbInflections[0].text = foundWord.nonPastInflection;
             verbInflections[1].text = foundWord.nonPastNegativeInflection;
             verbInflections[2].text = foundWord.nonPastInflectionPolite;
@@ -198,6 +201,7 @@ public class DictManager : MonoBehaviour
         }
         else
         {
+            showVerbInflectionsButton.SetActive(false);
             for (int i = 0; i < 18; i++)
             {
                 verbInflections[i].text = "";
@@ -303,6 +307,7 @@ public class DictManager : MonoBehaviour
         longDefinitionAboutTheWordJp.text = "";
         isTheWordAGivenName = false;
         wordOptionsDropdown.gameObject.SetActive(false);
+        showVerbInflectionsButton.SetActive(false);
     }
 
     void Start()
@@ -344,68 +349,19 @@ public class DictManager : MonoBehaviour
             searchRelatedWordButton.SetActive(false);
         }
 
-        if (isTheWordAVerb == true)
+        /*if (isTheWordAVerb == true)
         {
             showVerbInflectionsButton.SetActive(true);
         }
         else
         {
             showVerbInflectionsButton.SetActive(false);
-        }
-
-    }
-
-
-    //Menu controll (Temporal Fix, will change it once I move onto the decoration part of the project).
-    public void MoveToNextSide()
-    {
-        pageNumber += 1;
-        movementBetweenPagesLine1 = line1.transform.position;
-        movementBetweenPagesLine2 = line2.transform.position;
-        movementBetweenPagesLine3 = line3.transform.position;
-        movementBetweenPagesLine4 = line4.transform.position;
-        movementBetweenPagesLine5 = line5.transform.position;
-        movementBetweenPagesLine6 = line6.transform.position;
-        movementBetweenPagesLine1.x -= distanceBetweenMovement;
-        movementBetweenPagesLine2.x -= distanceBetweenMovement;
-        movementBetweenPagesLine3.x -= distanceBetweenMovement;
-        movementBetweenPagesLine4.x -= distanceBetweenMovement;
-        movementBetweenPagesLine5.x -= distanceBetweenMovement;
-        movementBetweenPagesLine6.x -= distanceBetweenMovement;
-        line1.transform.position = movementBetweenPagesLine1;
-        line2.transform.position = movementBetweenPagesLine2;
-        line3.transform.position = movementBetweenPagesLine3;
-        line4.transform.position = movementBetweenPagesLine4;
-        line5.transform.position = movementBetweenPagesLine5;
-        line6.transform.position = movementBetweenPagesLine6;
-    }
-
-    public void MoveBack()
-    {
-        pageNumber -= 1;
-        movementBetweenPagesLine1 = line1.transform.position;
-        movementBetweenPagesLine2 = line2.transform.position;
-        movementBetweenPagesLine3 = line3.transform.position;
-        movementBetweenPagesLine4 = line4.transform.position;
-        movementBetweenPagesLine5 = line5.transform.position;
-        movementBetweenPagesLine6 = line6.transform.position;
-        movementBetweenPagesLine1.x += distanceBetweenMovement;
-        movementBetweenPagesLine2.x += distanceBetweenMovement;
-        movementBetweenPagesLine3.x += distanceBetweenMovement;
-        movementBetweenPagesLine4.x += distanceBetweenMovement;
-        movementBetweenPagesLine5.x += distanceBetweenMovement;
-        movementBetweenPagesLine6.x += distanceBetweenMovement;
-        line1.transform.position = movementBetweenPagesLine1;
-        line2.transform.position = movementBetweenPagesLine2;
-        line3.transform.position = movementBetweenPagesLine3;
-        line4.transform.position = movementBetweenPagesLine4;
-        line5.transform.position = movementBetweenPagesLine5;
-        line6.transform.position = movementBetweenPagesLine6;
+        }*/
     }
 
     public void ResetScrollbar()
     {
-        defScrollbar.value = 0;
+        defScrollbar.value = 100;
     }
 }
 

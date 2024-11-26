@@ -26,6 +26,9 @@ public class CustomDict : MonoBehaviour
     public TMP_Text longDefinitionAboutTheWordJp;
     public string currentRelatedWord;
     public bool isTheWordAVerb;
+    public TMP_InputField[] verbInflections;
+    public GameObject toggleVerbButton;
+    public TMP_Text toggleVerbButtonText;
 
     public TMP_InputField wordIF;
     public TMP_InputField kanaIF;
@@ -87,13 +90,6 @@ public class CustomDict : MonoBehaviour
         dict.wordList[currentDictWordAmount].wordType2 = wordType2IF.text;
         dict.wordList[currentDictWordAmount].relatedWord = relatedWordIF.text;
 
-        dict.wordList[currentDictWordAmount].def = new string[wordDefIF.Length];
-
-        for (int i = 0; i < wordDefIF.Length; i++)
-        {
-            dict.wordList[currentDictWordAmount].def[i] = wordDefIF[i].text;
-        }
-
         dict.wordList[currentDictWordAmount].example1 = example1JpIF.text;
         dict.wordList[currentDictWordAmount].example1Alt = example1EnIF.text;
         dict.wordList[currentDictWordAmount].example2 = example2JpIF.text;
@@ -103,6 +99,33 @@ public class CustomDict : MonoBehaviour
         dict.wordList[currentDictWordAmount].romaji = romajiIF.text;
         dict.wordList[currentDictWordAmount].hiragana = hiraganaIF.text;
         dict.wordList[currentDictWordAmount].alternativeForm = alternativeFormIF.text;
+
+        dict.wordList[currentDictWordAmount].isTheWordAVerb = isTheWordAVerb;
+        dict.wordList[currentDictWordAmount].nonPastInflection = verbInflections[0].text;
+        dict.wordList[currentDictWordAmount].nonPastNegativeInflection = verbInflections[1].text;
+        dict.wordList[currentDictWordAmount].nonPastInflectionPolite = verbInflections[2].text;
+        dict.wordList[currentDictWordAmount].nonPastNegativeInflectionPolite = verbInflections[3].text;
+        dict.wordList[currentDictWordAmount].pastInflection = verbInflections[4].text;
+        dict.wordList[currentDictWordAmount].pastNegativeInflection = verbInflections[5].text;
+        dict.wordList[currentDictWordAmount].pastInflectionPolite = verbInflections[6].text;
+        dict.wordList[currentDictWordAmount].pastNegativeInflectionPolite = verbInflections[7].text;
+        dict.wordList[currentDictWordAmount].teFormInflection = verbInflections[8].text;
+        dict.wordList[currentDictWordAmount].teFormInflectionNegative = verbInflections[9].text;
+        dict.wordList[currentDictWordAmount].potentialInflection = verbInflections[10].text;
+        dict.wordList[currentDictWordAmount].potentialNegativeInflection = verbInflections[11].text;
+        dict.wordList[currentDictWordAmount].passiveInflection = verbInflections[12].text;
+        dict.wordList[currentDictWordAmount].passiveNegativeInflection = verbInflections[13].text;
+        dict.wordList[currentDictWordAmount].causativeInflection = verbInflections[14].text;
+        dict.wordList[currentDictWordAmount].causativeNegativeInflection = verbInflections[15].text;
+        dict.wordList[currentDictWordAmount].imperativeInflection = verbInflections[16].text;
+        dict.wordList[currentDictWordAmount].imperativeNegativeInflection = verbInflections[17].text;
+
+        dict.wordList[currentDictWordAmount].def = new string[wordDefIF.Length];
+
+        for (int i = 0; i < wordDefIF.Length; i++)
+        {
+            dict.wordList[currentDictWordAmount].def[i] = wordDefIF[i].text;
+        }
     }
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
@@ -318,7 +341,20 @@ public class CustomDict : MonoBehaviour
         {
             searchRelatedWordButton.SetActive(false);
         }
+    }
 
+    public void ToggleVerb()
+    {
+        if (isTheWordAVerb == true)
+        {
+            isTheWordAVerb = false;
+            toggleVerbButtonText.text = "Toggle Verb: OFF";
+        }
+        else
+        {
+            isTheWordAVerb = true;
+            toggleVerbButtonText.text = "Toggle Verb: ON";
+        }
     }
 }
 
@@ -370,8 +406,8 @@ public class InfoListFCJ
     public string pastNegativeInflectionPoliteRomaji;
     public string teFormInflection;
     public string teFormInflectionRomaji;
-    public string teFormInflectionPolite;
-    public string teFormInflectionPoliteRomaji;
+    public string teFormInflectionNegative;
+    public string teFormInflectionNegativeRomaji;
     public string potentialInflection;
     public string potentialInflectionRomaji;
     public string potentialNegativeInflection;

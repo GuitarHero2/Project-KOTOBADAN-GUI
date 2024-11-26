@@ -27,6 +27,10 @@ public class DictManager : MonoBehaviour
     public TMP_Text pageNumberText;
     public string currentRelatedWord;
 
+    public bool isTheWordAVerb;
+    public TMP_Text[] verbInflections;
+    public GameObject showVerbInflectionsButton;
+
     public int pageNumber = 1;
     public GameObject backButton;
     public GameObject searchRelatedWordButton;
@@ -37,6 +41,8 @@ public class DictManager : MonoBehaviour
     public GameObject line4;
     public GameObject line5;
     public GameObject line6;
+
+    public Scrollbar defScrollbar;
 
 
     Vector3 movementBetweenPagesLine1;
@@ -113,6 +119,8 @@ public class DictManager : MonoBehaviour
     }
     public void SearchRelatedWord()
     {
+        ResetScrollbar();
+
         string query = currentRelatedWord;
         currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
 
@@ -130,6 +138,11 @@ public class DictManager : MonoBehaviour
         {
             ClearHistory();
             wordSearched.text = "Word not found";
+        }
+
+        if (query == "")
+        {
+            isTheWordAVerb = false;
         }
     }
 
@@ -158,6 +171,36 @@ public class DictManager : MonoBehaviour
             else
             {
                 wordDef[i].text = "";
+            }
+        }
+
+        isTheWordAVerb = foundWord.isTheWordAVerb;
+        if (isTheWordAVerb == true)
+        {
+            verbInflections[0].text = foundWord.nonPastInflection;
+            verbInflections[1].text = foundWord.nonPastNegativeInflection;
+            verbInflections[2].text = foundWord.nonPastInflectionPolite;
+            verbInflections[3].text = foundWord.nonPastNegativeInflectionPolite;
+            verbInflections[4].text = foundWord.pastInflection;
+            verbInflections[5].text = foundWord.pastNegativeInflection;
+            verbInflections[6].text = foundWord.pastInflectionPolite;
+            verbInflections[7].text = foundWord.pastNegativeInflectionPolite;
+            verbInflections[8].text = foundWord.teFormInflection;
+            verbInflections[9].text = foundWord.teFormInflectionNegative;
+            verbInflections[10].text = foundWord.potentialInflection;
+            verbInflections[11].text = foundWord.potentialNegativeInflection;
+            verbInflections[12].text = foundWord.passiveInflection;
+            verbInflections[13].text = foundWord.passiveNegativeInflection;
+            verbInflections[14].text = foundWord.causativeInflection;
+            verbInflections[15].text = foundWord.causativeNegativeInflection;
+            verbInflections[16].text = foundWord.imperativeInflection;
+            verbInflections[17].text = foundWord.imperativeNegativeInflection;
+        }
+        else
+        {
+            for (int i = 0; i < 18; i++)
+            {
+                verbInflections[i].text = "";
             }
         }
 
@@ -243,6 +286,12 @@ public class DictManager : MonoBehaviour
         {
             wordDef[i].text = "";
         }
+
+        for (int i = 0; i < 18; i++)
+        {
+            verbInflections[i].text = "";
+        }
+
         wordType1.text = "";
         wordType2.text = "";
         example1.text = "";
@@ -295,6 +344,15 @@ public class DictManager : MonoBehaviour
             searchRelatedWordButton.SetActive(false);
         }
 
+        if (isTheWordAVerb == true)
+        {
+            showVerbInflectionsButton.SetActive(true);
+        }
+        else
+        {
+            showVerbInflectionsButton.SetActive(false);
+        }
+
     }
 
 
@@ -343,6 +401,11 @@ public class DictManager : MonoBehaviour
         line4.transform.position = movementBetweenPagesLine4;
         line5.transform.position = movementBetweenPagesLine5;
         line6.transform.position = movementBetweenPagesLine6;
+    }
+
+    public void ResetScrollbar()
+    {
+        defScrollbar.value = 0;
     }
 }
 
@@ -393,8 +456,8 @@ public class InfoList
     public string pastNegativeInflectionPoliteRomaji;
     public string teFormInflection;
     public string teFormInflectionRomaji;
-    public string teFormInflectionPolite;
-    public string teFormInflectionPoliteRomaji;
+    public string teFormInflectionNegative;
+    public string teFormInflectionNegativeRomaji;
     public string potentialInflection;
     public string potentialInflectionRomaji;
     public string potentialNegativeInflection;

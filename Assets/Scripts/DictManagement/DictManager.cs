@@ -44,13 +44,6 @@ public class DictManager : MonoBehaviour
 
     public Scrollbar defScrollbar;
 
-
-    Vector3 movementBetweenPagesLine1;
-    Vector3 movementBetweenPagesLine2;
-    Vector3 movementBetweenPagesLine3;
-    Vector3 movementBetweenPagesLine4;
-    Vector3 movementBetweenPagesLine5;
-    Vector3 movementBetweenPagesLine6;
     public float distanceBetweenMovement;
 
     public TMP_Dropdown wordOptionsDropdown;

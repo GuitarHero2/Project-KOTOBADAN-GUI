@@ -15,6 +15,11 @@ public class MainMenuButtonBehavior : MonoBehaviour
     public float timer;
 
 
+    public GameObject pausedMenu;
+    public GameObject Minigame;
+    public bool paused;
+
+
     // IN CASE OF BUGS WITH THE MAIN MENU ANIMATIONS
 
     /*void Update()
@@ -34,6 +39,24 @@ public class MainMenuButtonBehavior : MonoBehaviour
         }
 
     }*/
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && paused == false)
+        {
+            pausedMenu.SetActive(true);
+            Minigame.SetActive(false);
+            paused = true;
+            PauseButton();
+        }
+        else if (paused == true && Input.GetKeyDown(KeyCode.Escape))
+        {
+            pausedMenu.SetActive(false);
+            Minigame.SetActive(true);
+            paused = false;
+            ResumeButton();
+        }
+    }
 
 
     public void QuitProgram()

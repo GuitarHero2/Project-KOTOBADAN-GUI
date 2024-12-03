@@ -35,6 +35,7 @@ public class CustomDict : MonoBehaviour
     public GameObject backButton;
     public GameObject searchRelatedWordButton;
     public TMP_Text searchRelatedWordText;
+    public GameObject seeVerbInflectionMenuButton;
 
     public TMP_Dropdown wordOptionsDropdown;
     private List<InfoListFCJ> currentResults = new List<InfoListFCJ>();
@@ -133,11 +134,13 @@ public class CustomDict : MonoBehaviour
         {
             isTheWordAVerb = false;
             toggleVerbButtonText.text = "Toggle Verb: OFF";
+            seeVerbInflectionMenuButton.SetActive(false);
         }
         else
         {
             isTheWordAVerb = true;
             toggleVerbButtonText.text = "Toggle Verb: ON";
+            seeVerbInflectionMenuButton.SetActive(true);
         }
     }
 }

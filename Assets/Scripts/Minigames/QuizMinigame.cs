@@ -11,6 +11,7 @@ public class QuizMinigame : MonoBehaviour
 {
     public int currentScore;
     public TMP_Text scoreText;
+    public TMP_Text timerText;
 
     public TMP_InputField answerInputField;
     public TMP_Text hintText;
@@ -21,13 +22,14 @@ public class QuizMinigame : MonoBehaviour
     public int currentWordInIndex;
     public float fadeDuration;
     public string jlptFilter;
+    int timerToInt;
 
     public InfoList currentWord;
     public List<InfoList> wordList;
     public List<InfoList> usedWords = new List<InfoList>();
     public TMP_Text[] meaningText;
 
-   // public DeckFQG deckFQG = new DeckFQG();
+    // public DeckFQG deckFQG = new DeckFQG();
 
 
     // DEBUG
@@ -89,6 +91,9 @@ public class QuizMinigame : MonoBehaviour
     {
         // DEBUG
         //debugFloat = timeBeforeWordChanges;
+
+        timerToInt = (int)timeBeforeWordChanges;
+        timerText.text = timerToInt.ToString();
 
         if (wordList.Count == 0)
         {

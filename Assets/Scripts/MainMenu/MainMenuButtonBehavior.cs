@@ -65,6 +65,11 @@ public class MainMenuButtonBehavior : MonoBehaviour
         Debug.Log("The program closed successfully!");
     }
 
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(currentScene);
+    }
+
     public void PauseButton()
     {
         Time.timeScale = 0;

@@ -51,6 +51,8 @@ public class DictManager : MonoBehaviour
 
     public ENDictionary dict = new ENDictionary();
 
+    public bool alternateBetweenCustomDictAndDict = false;
+
     public void SaveToJson()
     {
         string dictData = JsonUtility.ToJson(dict);

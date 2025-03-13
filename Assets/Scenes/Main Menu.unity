@@ -9464,7 +9464,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 272707871}
   m_HandleRect: {fileID: 272707870}
   m_Direction: 2
-  m_Value: 0
+  m_Value: -0.000000058572635
   m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12328,24 +12328,26 @@ MonoBehaviour:
   wordOptionsDropdown: {fileID: 1211710433}
   dict:
     wordList:
-    - word: 
-      kana: 
-      hiragana: 
-      alternativeForm: 
-      romaji: 
-      wordType1: 
+    - word: "\u6D74\u3073\u308B"
+      kana: "\u3042\u3073\u308B"
+      hiragana: "\u3042\u3073\u308B"
+      alternativeForm: "\u3042\u3073\u308B"
+      romaji: abiru
+      wordType1: Verb
       wordType2: 
-      pitch: 
+      pitch: "\u3042/\u3073\u308B"
       givenName: 
       isTheWordAGivenName: 0
-      jlptLevel: 
-      def: []
-      example1: 
-      example1Alt: 
-      example2: 
-      example2Alt: 
-      longDefinitionAboutTheWordEn: 
-      longDefinitionAboutTheWordJp: 
+      jlptLevel: JLPT N5
+      def:
+      - To bathe
+      - To shower
+      example1: "\u30B7\u30E3\u30EF\u30FC\u3092\u6D74\u3073\u308B"
+      example1Alt: To take a shower
+      example2: "\u30D5\u30C3\u30C8\u30E9\u30A4\u30C8\u3092\u6D74\u3073\u308B"
+      example2Alt: To appear on the stage
+      longDefinitionAboutTheWordEn: "\u6E6F\u3084\u6C34\u3092\u304B\u3076\u308B"
+      longDefinitionAboutTheWordJp: To cover something in hot water or water.
       relatedWord: 
       isTheWordAVerb: 0
       nonPastInflection: 

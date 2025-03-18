@@ -235,7 +235,7 @@ public class DictManager : MonoBehaviour
         {
             wordType1.color = Color.yellow;
         }
-        else if (wordType1.text.ToLower() == "i-adjective")
+        else if (wordType1.text.ToLower() == "i-adjective" || wordType1.text.ToLower() == "?-adjective")
         {
             wordType1.color = Color.magenta;
         }
@@ -260,7 +260,7 @@ public class DictManager : MonoBehaviour
         {
             wordType2.color = Color.yellow;
         }
-        else if (wordType2.text.ToLower() == "i-adjective")
+        else if (wordType2.text.ToLower() == "i-adjective" || wordType2.text.ToLower() == "?-adjective")
         {
             wordType2.color = Color.magenta;
         }

@@ -14,31 +14,9 @@ public class DictManager : MonoBehaviour
     public bool isTheWordAGivenName;
     public TMP_Text pitch;
     public TMP_Text wordSearched;
-    public TMP_Text wordType;
-    public TMP_Text wordDef1;
-    public TMP_Text wordDef2;
-    public TMP_Text wordDef3;
-    public TMP_Text wordDef4;
-    public TMP_Text wordDef5;
-    public TMP_Text wordDef6;
-    public TMP_Text wordDef7;
-    public TMP_Text wordDef8;
-    public TMP_Text wordDef9;
-    public TMP_Text wordDef10;
-    public TMP_Text wordDef11;
-    public TMP_Text wordDef12;
-    public TMP_Text wordDef13;
-    public TMP_Text wordDef14;
-    public TMP_Text wordDef15;
-    public TMP_Text wordDef16;
-    public TMP_Text wordDef17;
-    public TMP_Text wordDef18;
-    public TMP_Text wordDef19;
-    public TMP_Text wordDef20;
-    public TMP_Text wordDef21;
-    public TMP_Text wordDef22;
-    public TMP_Text wordDef23;
-    public TMP_Text wordDef24;
+    public TMP_Text wordType1;
+    public TMP_Text wordType2;
+    public TMP_Text[] wordDef;
     public TMP_Text example1;
     public TMP_Text example1Alt;
     public TMP_Text example2;
@@ -47,9 +25,16 @@ public class DictManager : MonoBehaviour
     public TMP_Text longDefinitionAboutTheWordEn;
     public TMP_Text longDefinitionAboutTheWordJp;
     public TMP_Text pageNumberText;
+    public string currentRelatedWord;
+
+    public bool isTheWordAVerb;
+    public TMP_Text[] verbInflections;
+    public GameObject showVerbInflectionsButton;
 
     public int pageNumber = 1;
     public GameObject backButton;
+    public GameObject searchRelatedWordButton;
+    public TMP_Text searchRelatedWordText;
     public GameObject line1;
     public GameObject line2;
     public GameObject line3;
@@ -57,18 +42,16 @@ public class DictManager : MonoBehaviour
     public GameObject line5;
     public GameObject line6;
 
-    Vector3 movementBetweenPagesLine1;
-    Vector3 movementBetweenPagesLine2;
-    Vector3 movementBetweenPagesLine3;
-    Vector3 movementBetweenPagesLine4;
-    Vector3 movementBetweenPagesLine5;
-    Vector3 movementBetweenPagesLine6;
+    public Scrollbar defScrollbar;
+
     public float distanceBetweenMovement;
 
     public TMP_Dropdown wordOptionsDropdown;
     private List<InfoList> currentResults = new List<InfoList>();
 
     public ENDictionary dict = new ENDictionary();
+
+    public bool alternateBetweenCustomDictAndDict = false;
 
     public void SaveToJson()
     {
@@ -93,8 +76,27 @@ public class DictManager : MonoBehaviour
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
     {
+        ResetScrollbar();
+
         string query = inputField.text.ToLower();
-        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query).ToList();
+        currentResults = dict.wordList.Where(word => word.word == query || word.kana == query || word.romaji.ToLower() == query || word.hiragana == query || word.alternativeForm.ToLower() == query ||
+        word.teFormInflection == query || word.teFormInflectionRomaji.ToLower() == query ||
+        word.nonPastNegativeInflection == query || word.nonPastNegativeInflectionRomaji.ToLower() == query ||
+        word.nonPastNegativeInflectionPolite == query || word.nonPastNegativeInflectionPoliteRomaji.ToLower() == query ||
+        word.pastInflection == query || word.pastInflectionRomaji.ToLower() == query ||
+        word.pastNegativeInflection == query || word.pastNegativeInflectionRomaji == query ||
+        word.pastInflectionPolite == query || word.pastInflectionPoliteRomaji.ToLower() == query ||
+        word.pastNegativeInflectionPolite == query || word.pastNegativeInflectionPoliteRomaji.ToLower() == query ||
+        word.potentialInflection == query || word.potentialInflectionRomaji.ToLower() == query ||
+        word.potentialNegativeInflection == query || word.potentialNegativeInflectionRomaji.ToLower() == query ||
+        word.passiveInflection == query || word.passiveInflectionRomaji.ToLower() == query ||
+        word.passiveNegativeInflection == query || word.passiveNegativeInflectionRomaji.ToLower() == query ||
+        word.causativeInflection == query || word.causativeInflectionRomaji.ToLower() == query ||
+        word.causativeNegativeInflection == query || word.causativeNegativeInflectionRomaji.ToLower() == query ||
+        word.causativePassiveInflection == query || word.causativePassiveInflectionRomaji.ToLower() == query ||
+        word.causativePassiveNegativeInflection == query || word.causativePassiveNegativeInflectionRomaji.ToLower() == query ||
+        word.imperativeInflection == query || word.imperativeInflectionRomaji.ToLower() == query ||
+        word.imperativeNegativeInflection == query || word.imperativeNegativeInflectionRomaji.ToLower() == query).ToList();
 
         if (currentResults.Count > 0)
         {
@@ -112,6 +114,34 @@ public class DictManager : MonoBehaviour
             wordSearched.text = "Word not found";
         }
     }
+    public void SearchRelatedWord()
+    {
+        ResetScrollbar();
+
+        string query = currentRelatedWord;
+        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
+
+        if (currentResults.Count > 0)
+        {
+            wordOptionsDropdown.gameObject.SetActive(true);
+            wordOptionsDropdown.ClearOptions();
+            wordOptionsDropdown.AddOptions(currentResults.Select(word => word.word).ToList());
+            wordOptionsDropdown.onValueChanged.RemoveAllListeners();
+            wordOptionsDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+
+            DisplayWord(currentResults[0]);
+        }
+        else
+        {
+            ClearHistory();
+            wordSearched.text = "Word not found";
+        }
+
+        if (query == "")
+        {
+            isTheWordAVerb = false;
+        }
+    }
 
     public void OnDropdownValueChanged(int index) // Dropdown search updater
     {
@@ -126,31 +156,53 @@ public class DictManager : MonoBehaviour
         wordSearched.text = foundWord.word;
         kana.text = foundWord.kana;
         pitch.text = foundWord.pitch;
-        wordType.text = foundWord.wordType;
-        wordDef1.text = foundWord.def1;
-        wordDef2.text = foundWord.def2;
-        wordDef3.text = foundWord.def3;
-        wordDef4.text = foundWord.def4;
-        wordDef5.text = foundWord.def5;
-        wordDef6.text = foundWord.def6;
-        wordDef7.text = foundWord.def7;
-        wordDef8.text = foundWord.def8;
-        wordDef9.text = foundWord.def9;
-        wordDef10.text = foundWord.def10;
-        wordDef11.text = foundWord.def11;
-        wordDef12.text = foundWord.def12;
-        wordDef13.text = foundWord.def13;
-        wordDef14.text = foundWord.def14;
-        wordDef15.text = foundWord.def15;
-        wordDef16.text = foundWord.def16;
-        wordDef17.text = foundWord.def17;
-        wordDef18.text = foundWord.def18;
-        wordDef19.text = foundWord.def19;
-        wordDef20.text = foundWord.def20;
-        wordDef21.text = foundWord.def21;
-        wordDef22.text = foundWord.def22;
-        wordDef23.text = foundWord.def23;
-        wordDef24.text = foundWord.def24;
+        wordType1.text = foundWord.wordType1;
+        wordType2.text = foundWord.wordType2;
+
+        for (int i = 0; i < wordDef.Length; i++)
+        {
+            if (i < foundWord.def.Length)
+            {
+                wordDef[i].text = foundWord.def[i];
+            }
+            else
+            {
+                wordDef[i].text = "";
+            }
+        }
+
+        isTheWordAVerb = foundWord.isTheWordAVerb;
+        if (isTheWordAVerb == true)
+        {
+            showVerbInflectionsButton.SetActive(true);
+            verbInflections[0].text = foundWord.nonPastInflection;
+            verbInflections[1].text = foundWord.nonPastNegativeInflection;
+            verbInflections[2].text = foundWord.nonPastInflectionPolite;
+            verbInflections[3].text = foundWord.nonPastNegativeInflectionPolite;
+            verbInflections[4].text = foundWord.pastInflection;
+            verbInflections[5].text = foundWord.pastNegativeInflection;
+            verbInflections[6].text = foundWord.pastInflectionPolite;
+            verbInflections[7].text = foundWord.pastNegativeInflectionPolite;
+            verbInflections[8].text = foundWord.teFormInflection;
+            verbInflections[9].text = foundWord.teFormInflectionNegative;
+            verbInflections[10].text = foundWord.potentialInflection;
+            verbInflections[11].text = foundWord.potentialNegativeInflection;
+            verbInflections[12].text = foundWord.passiveInflection;
+            verbInflections[13].text = foundWord.passiveNegativeInflection;
+            verbInflections[14].text = foundWord.causativeInflection;
+            verbInflections[15].text = foundWord.causativeNegativeInflection;
+            verbInflections[16].text = foundWord.imperativeInflection;
+            verbInflections[17].text = foundWord.imperativeNegativeInflection;
+        }
+        else
+        {
+            showVerbInflectionsButton.SetActive(false);
+            for (int i = 0; i < 18; i++)
+            {
+                verbInflections[i].text = "";
+            }
+        }
+
         example1.text = foundWord.example1;
         example1Alt.text = foundWord.example1Alt;
         example2.text = foundWord.example2;
@@ -158,6 +210,8 @@ public class DictManager : MonoBehaviour
         jlpt.text = foundWord.jlptLevel;
         longDefinitionAboutTheWordEn.text = foundWord.longDefinitionAboutTheWordEn;
         longDefinitionAboutTheWordJp.text = foundWord.longDefinitionAboutTheWordJp;
+        currentRelatedWord = foundWord.relatedWord;
+        searchRelatedWordText.text = foundWord.relatedWord;
 
         if (foundWord.isTheWordAGivenName)
         {
@@ -168,55 +222,77 @@ public class DictManager : MonoBehaviour
             givenName.text = "";
         }
 
-        if (wordType.text.ToLower() == "verb")
+        //Word Type 1
+        if (wordType1.text.ToLower() == "verb")
         {
-            wordType.color = Color.red;
+            wordType1.color = Color.red;
         }
-        else if (wordType.text.ToLower() == "noun")
+        else if (wordType1.text.ToLower() == "noun")
         {
-            wordType.color = Color.cyan;
+            wordType1.color = Color.cyan;
         }
-        else if (wordType.text.ToLower() == "adjective")
+        else if (wordType1.text.ToLower() == "na-adjective")
         {
-            wordType.color = Color.yellow;
+            wordType1.color = Color.yellow;
+        }
+        else if (wordType1.text.ToLower() == "i-adjective" || wordType1.text.ToLower() == "?-adjective")
+        {
+            wordType1.color = Color.magenta;
+        }
+        else if (wordType1.text.ToLower() == "suru verb")
+        {
+            wordType1.color = Color.gray;
         }
         else
         {
-            wordType.color = Color.white;
+            wordType1.color = Color.white;
+        }
+        //Word Type 2
+        if (wordType2.text.ToLower() == "verb")
+        {
+            wordType2.color = Color.red;
+        }
+        else if (wordType2.text.ToLower() == "noun")
+        {
+            wordType2.color = Color.cyan;
+        }
+        else if (wordType2.text.ToLower() == "na-adjective")
+        {
+            wordType2.color = Color.yellow;
+        }
+        else if (wordType2.text.ToLower() == "i-adjective" || wordType2.text.ToLower() == "?-adjective")
+        {
+            wordType2.color = Color.magenta;
+        }
+        else if (wordType2.text.ToLower() == "suru verb")
+        {
+            wordType2.color = Color.gray;
+        }
+        else
+        {
+            wordType2.color = Color.white;
         }
     }
 
     public void ClearHistory() // Clear all textes once the results are null or you go back in the menu.
     {
+        currentRelatedWord = "";
         inputField.text = "";
         wordSearched.text = "";
         kana.text = "";
-        wordDef1.text = "";
-        wordDef2.text = "";
-        wordDef3.text = "";
-        wordDef4.text = "";
-        wordDef5.text = "";
-        wordDef6.text = "";
-        wordDef7.text = "";
-        wordDef8.text = "";
-        wordDef9.text = "";
-        wordDef10.text = "";
-        wordDef11.text = "";
-        wordDef12.text = "";
-        wordDef13.text = "";
-        wordDef14.text = "";
-        wordDef15.text = "";
-        wordDef16.text = "";
-        wordDef17.text = "";
-        wordDef18.text = "";
-        wordDef19.text = "";
-        wordDef20.text = "";
-        wordDef21.text = "";
-        wordDef22.text = "";
-        wordDef23.text = "";
-        wordDef24.text = "";
-        givenName.text = "";
-        wordType.text = "";
+        jlpt.text = "";
+        for (int i = 0; i < wordDef.Length; i++)
+        {
+            wordDef[i].text = "";
+        }
+
+        for (int i = 0; i < 18; i++)
+        {
+            verbInflections[i].text = "";
+        }
+
+        wordType1.text = "";
+        wordType2.text = "";
         example1.text = "";
         example1Alt.text = "";
         example2.text = "";
@@ -226,6 +302,7 @@ public class DictManager : MonoBehaviour
         longDefinitionAboutTheWordJp.text = "";
         isTheWordAGivenName = false;
         wordOptionsDropdown.gameObject.SetActive(false);
+        showVerbInflectionsButton.SetActive(false);
     }
 
     void Start()
@@ -241,6 +318,12 @@ public class DictManager : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SearchWord();
+            inputField.ActivateInputField();
+        }
+
         pageNumberText.text = pageNumber.ToString();
 
         if (pageNumber <= 1)
@@ -251,54 +334,29 @@ public class DictManager : MonoBehaviour
         {
             backButton.SetActive(true);
         }
+
+        if (currentRelatedWord != "")
+        {
+            searchRelatedWordButton.SetActive(true);
+        }
+        else
+        {
+            searchRelatedWordButton.SetActive(false);
+        }
+
+        /*if (isTheWordAVerb == true)
+        {
+            showVerbInflectionsButton.SetActive(true);
+        }
+        else
+        {
+            showVerbInflectionsButton.SetActive(false);
+        }
     }
 
-
-    //Menu controll (Temporal Fix, will change it once I move onto the decoration part of the project).
-    public void MoveToNextSide()
+    public void ResetScrollbar()
     {
-        pageNumber += 1;
-        movementBetweenPagesLine1 = line1.transform.position;
-        movementBetweenPagesLine2 = line2.transform.position;
-        movementBetweenPagesLine3 = line3.transform.position;
-        movementBetweenPagesLine4 = line4.transform.position;
-        movementBetweenPagesLine5 = line5.transform.position;
-        movementBetweenPagesLine6 = line6.transform.position;
-        movementBetweenPagesLine1.x -= distanceBetweenMovement;
-        movementBetweenPagesLine2.x -= distanceBetweenMovement;
-        movementBetweenPagesLine3.x -= distanceBetweenMovement;
-        movementBetweenPagesLine4.x -= distanceBetweenMovement;
-        movementBetweenPagesLine5.x -= distanceBetweenMovement;
-        movementBetweenPagesLine6.x -= distanceBetweenMovement;
-        line1.transform.position = movementBetweenPagesLine1;
-        line2.transform.position = movementBetweenPagesLine2;
-        line3.transform.position = movementBetweenPagesLine3;
-        line4.transform.position = movementBetweenPagesLine4;
-        line5.transform.position = movementBetweenPagesLine5;
-        line6.transform.position = movementBetweenPagesLine6;
-    }
-
-    public void MoveBack()
-    {
-        pageNumber -= 1;
-        movementBetweenPagesLine1 = line1.transform.position;
-        movementBetweenPagesLine2 = line2.transform.position;
-        movementBetweenPagesLine3 = line3.transform.position;
-        movementBetweenPagesLine4 = line4.transform.position;
-        movementBetweenPagesLine5 = line5.transform.position;
-        movementBetweenPagesLine6 = line6.transform.position;
-        movementBetweenPagesLine1.x += distanceBetweenMovement;
-        movementBetweenPagesLine2.x += distanceBetweenMovement;
-        movementBetweenPagesLine3.x += distanceBetweenMovement;
-        movementBetweenPagesLine4.x += distanceBetweenMovement;
-        movementBetweenPagesLine5.x += distanceBetweenMovement;
-        movementBetweenPagesLine6.x += distanceBetweenMovement;
-        line1.transform.position = movementBetweenPagesLine1;
-        line2.transform.position = movementBetweenPagesLine2;
-        line3.transform.position = movementBetweenPagesLine3;
-        line4.transform.position = movementBetweenPagesLine4;
-        line5.transform.position = movementBetweenPagesLine5;
-        line6.transform.position = movementBetweenPagesLine6;
+        defScrollbar.value = 100;
     }
 }
 
@@ -313,197 +371,62 @@ public class InfoList
 {
     public string word;
     public string kana;
+    public string hiragana;
+    public string alternativeForm;
     public string romaji;
-    public string wordType;
+    public string wordType1;
+    public string wordType2;
     public string pitch;
     public string givenName;
     public bool isTheWordAGivenName;
     public string jlptLevel;
-    public string def1;
-    public string def2;
-    public string def3;
-    public string def4;
-    public string def5;
-    public string def6;
-    public string def7;
-    public string def8;
-    public string def9;
-    public string def10;
-    public string def11;
-    public string def12;
-    public string def13;
-    public string def14;
-    public string def15;
-    public string def16;
-    public string def17;
-    public string def18;
-    public string def19;
-    public string def20;
-    public string def21;
-    public string def22;
-    public string def23;
-    public string def24;
+    public string[] def;
     public string example1;
     public string example1Alt;
     public string example2;
     public string example2Alt;
     public string longDefinitionAboutTheWordEn;
     public string longDefinitionAboutTheWordJp;
+    public string relatedWord;
+    public bool isTheWordAVerb;
+    public string nonPastInflection;
+    public string nonPastInflectionRomaji;
+    public string nonPastNegativeInflection;
+    public string nonPastNegativeInflectionRomaji;
+    public string nonPastInflectionPolite;
+    public string nonPastInflectionPoliteRomaji;
+    public string nonPastNegativeInflectionPolite;
+    public string nonPastNegativeInflectionPoliteRomaji;
+    public string pastInflection;
+    public string pastInflectionRomaji;
+    public string pastNegativeInflection;
+    public string pastNegativeInflectionRomaji;
+    public string pastInflectionPolite;
+    public string pastInflectionPoliteRomaji;
+    public string pastNegativeInflectionPolite;
+    public string pastNegativeInflectionPoliteRomaji;
+    public string teFormInflection;
+    public string teFormInflectionRomaji;
+    public string teFormInflectionNegative;
+    public string teFormInflectionNegativeRomaji;
+    public string potentialInflection;
+    public string potentialInflectionRomaji;
+    public string potentialNegativeInflection;
+    public string potentialNegativeInflectionRomaji;
+    public string passiveInflection;
+    public string passiveInflectionRomaji;
+    public string passiveNegativeInflection;
+    public string passiveNegativeInflectionRomaji;
+    public string causativeInflection;
+    public string causativeInflectionRomaji;
+    public string causativeNegativeInflection;
+    public string causativeNegativeInflectionRomaji;
+    public string causativePassiveInflection;
+    public string causativePassiveInflectionRomaji;
+    public string causativePassiveNegativeInflection;
+    public string causativePassiveNegativeInflectionRomaji;
+    public string imperativeInflection;
+    public string imperativeInflectionRomaji;
+    public string imperativeNegativeInflection;
+    public string imperativeNegativeInflectionRomaji;
 }*/
-
-/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
-using System.Linq;
-using TMPro;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
-public class QuizMinigame : MonoBehaviour
-{
-    public TMP_InputField answerInputField;
-    public TMP_Text hintText;
-    public TMP_Text feedbackText;
-    public float feedbackDelay;
-    public float timeBeforeWordChanges;
-    public float timeReturner;
-    public int currentWordInIndex;
-    public float fadeDuration;
-    public string jlptFilter;
-
-    private InfoList currentWord;
-    private List<InfoList> wordList;
-    private List<InfoList> usedWords = new List<InfoList>(); 
-
-    // DEBUG
-    public float debugFloat;
-
-    void Start()
-    {
-        wordList = FindObjectOfType<DictManager>().dict.wordList;
-        Debug.Log("Number of words in deck: " + wordList.Count);
-
-        if (wordList.Count > 0)
-        {
-            SelectNewWord();
-        }
-        else
-        {
-            Debug.LogError("The deck is empty!");
-        }
-    }
-    void FixedUpdate()
-    {
-        if (timeBeforeWordChanges >= 0)
-        {
-            timeBeforeWordChanges -= 1 * Time.deltaTime;
-        }
-        else if (timeBeforeWordChanges <= 0)
-        {
-            timeBeforeWordChanges = timeReturner + feedbackDelay;
-            feedbackText.text = "Incorrect. The correct answer was: " + currentWord.hiragana;
-            StartCoroutine(ShowFeedbackAndSelectNewWord());
-        }
-    }
-
-    void Update()
-    {
-        // DEBUG
-        debugFloat = timeBeforeWordChanges;
-
-        if (wordList.Count == 0)
-        {
-            WinScreen();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            CheckAnswer();
-            answerInputField.ActivateInputField();
-        }
-    }
-
-    void SelectNewWord()
-    {
-        // Filter all words with the same desired JLPT Level.
-        var filteredList = wordList.Where(word => word.jlptLevel == jlptFilter).ToList();
-
-        if (filteredList.Count > 0)
-        {
-            // This makes sure that any words repeats.
-            var availableWords = filteredList.Except(usedWords).ToList();
-
-            if (availableWords.Count == 0)
-            {
-                WinScreen();
-            }
-
-            currentWordInIndex = Random.Range(0, availableWords.Count);
-            currentWord = availableWords[currentWordInIndex];
-            hintText.text = currentWord.word;
-            feedbackText.text = "";
-            answerInputField.ActivateInputField();
-        }
-        else
-        {
-            Debug.LogError("No words available for the selected JLPT level!");
-        }
-    }
-
-    public void CheckAnswer()
-    {
-        string playerAnswer = answerInputField.text;
-        if (timeBeforeWordChanges < timeReturner)
-        {
-            if (playerAnswer == currentWord.word || playerAnswer == currentWord.kana || playerAnswer == currentWord.romaji)
-            {
-                StartCoroutine(FadeHintColorToWhite(Color.green, fadeDuration));
-                feedbackText.text = "Correct!";
-                usedWords.Add(currentWord); // Mark any new word as used if answered correctly.
-                timeBeforeWordChanges = timeReturner + feedbackDelay;
-                StartCoroutine(ShowFeedbackAndSelectNewWord());
-            }
-            else
-            {
-                StartCoroutine(FadeHintColorToWhite(Color.red, fadeDuration));
-            }
-        }
-    }
-
-    public void SetJlptFilter(string newJlptFilter)
-    {
-        jlptFilter = newJlptFilter;
-        SelectNewWord(); // Update the method with the filter.
-    }
-
-    public void WinScreen()
-    {
-        SceneManager.LoadScene(1);
-    }
-
-    IEnumerator ShowFeedbackAndSelectNewWord()
-    {
-        yield return new WaitForSeconds(feedbackDelay);
-        SelectNewWord();
-        answerInputField.text = "";
-    }
-
-    IEnumerator FadeHintColorToWhite(Color popupColor, float duration)
-    {
-        Color endColor = Color.white;
-        float elapsedTime = 0;
-
-        hintText.color = popupColor;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            hintText.color = Color.Lerp(popupColor, endColor, elapsedTime / duration);
-            yield return null;
-        }
-
-        hintText.color = endColor;
-    }
-}
-*/

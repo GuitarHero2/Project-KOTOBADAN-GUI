@@ -156,6 +156,7 @@ public class QuizMinigame : MonoBehaviour
             else
             {
                 Debug.LogError("No words available for the selected JLPT level!");
+                SceneManager.LoadScene(1);
             }
         }
     }

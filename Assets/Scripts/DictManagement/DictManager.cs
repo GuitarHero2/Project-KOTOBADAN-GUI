@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DictManager : MonoBehaviour
 {
@@ -51,7 +52,7 @@ public class DictManager : MonoBehaviour
 
     public ENDictionary dict = new ENDictionary();
 
-    public bool alternateBetweenCustomDictAndDict = false;
+    public GameObject noDictButton;
 
     public void SaveToJson()
     {
@@ -73,6 +74,8 @@ public class DictManager : MonoBehaviour
             SaveToJson();
         }
     }
+
+
 
     public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
     {
@@ -260,7 +263,7 @@ public class DictManager : MonoBehaviour
         {
             wordType2.color = Color.yellow;
         }
-        else if (wordType2.text.ToLower() == "i-adjective" || wordType2.text.ToLower() == "?-adjective")
+        else if (wordType2.text.ToLower() == "i-adjective")
         {
             wordType2.color = Color.magenta;
         }
@@ -309,13 +312,20 @@ public class DictManager : MonoBehaviour
     {
         try
         {
+            string fileLocation = Application.persistentDataPath + "/KTBDict.json";
+            if (!File.Exists(fileLocation))
+            {
+                noDictButton.SetActive(true);
+            }
             LoadToJson();
+
         }
         catch (FileNotFoundException e)
         {
             SaveToJson();
         }
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))

@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1201,7 +1200,6 @@ MonoBehaviour:
   inputField: {fileID: 0}
   kana: {fileID: 0}
   givenName: {fileID: 0}
-  isTheWordAGivenName: 0
   pitch: {fileID: 0}
   wordSearched: {fileID: 0}
   wordType1: {fileID: 0}
@@ -1215,26 +1213,17 @@ MonoBehaviour:
   longDefinitionAboutTheWordEn: {fileID: 0}
   longDefinitionAboutTheWordJp: {fileID: 0}
   pageNumberText: {fileID: 1087668590}
-  currentRelatedWord: 
-  isTheWordAVerb: 0
   verbInflections: []
+  wordOptionsDropdown: {fileID: 0}
+  searchRelatedWordText: {fileID: 1087668590}
   showVerbInflectionsButton: {fileID: 0}
-  pageNumber: 1
   backButton: {fileID: 1087668589}
   searchRelatedWordButton: {fileID: 1087668589}
-  searchRelatedWordText: {fileID: 1087668590}
-  line1: {fileID: 1087668589}
-  line2: {fileID: 0}
-  line3: {fileID: 0}
-  line4: {fileID: 0}
-  line5: {fileID: 0}
-  line6: {fileID: 0}
-  defScrollbar: {fileID: 0}
-  distanceBetweenMovement: 17.8
-  wordOptionsDropdown: {fileID: 0}
-  dict:
-    wordList: []
   noDictButton: {fileID: 0}
+  defScrollbar: {fileID: 0}
+  fileName: KTBDict.json
+  enableVerbSearch: 1
+  enableRelatedWordSearch: 1
 --- !u!4 &240045266
 Transform:
   m_ObjectHideFlags: 0
@@ -4397,7 +4386,7 @@ MonoBehaviour:
   timeReturner: 10
   currentWordInIndex: 0
   fadeDuration: 0.5
-  jlptFilter: JLPT N1
+  jlptFilter: N1
   currentWord:
     word: 
     kana: 

@@ -23,14 +23,14 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 26244c0be694f314e93cb8f6a82f029a
-    m_Address: Spanish (es)
+  - m_GUID: 176055bf8406397449c33be7da22a0cb
+    m_Address: Japanese (ja)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 176055bf8406397449c33be7da22a0cb
-    m_Address: Japanese (ja)
+  - m_GUID: 26244c0be694f314e93cb8f6a82f029a
+    m_Address: Spanish (es)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

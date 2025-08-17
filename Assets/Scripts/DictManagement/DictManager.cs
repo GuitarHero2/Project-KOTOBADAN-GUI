@@ -9,129 +9,248 @@ using UnityEngine.SceneManagement;
 
 public class DictManager : MonoBehaviour
 {
-    public TMP_InputField inputField;
-    public TMP_Text kana;
-    public TMP_Text givenName;
-    public bool isTheWordAGivenName;
-    public TMP_Text pitch;
-    public TMP_Text wordSearched;
-    public TMP_Text wordType1;
-    public TMP_Text wordType2;
-    public TMP_Text[] wordDef;
-    public TMP_Text example1;
-    public TMP_Text example1Alt;
-    public TMP_Text example2;
-    public TMP_Text example2Alt;
-    public TMP_Text jlpt;
-    public TMP_Text longDefinitionAboutTheWordEn;
-    public TMP_Text longDefinitionAboutTheWordJp;
-    public TMP_Text pageNumberText;
-    public string currentRelatedWord;
+    [Header("UI References")]
+    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private TMP_Text kana;
+    [SerializeField] private TMP_Text givenName;
+    [SerializeField] private TMP_Text pitch;
+    [SerializeField] private TMP_Text wordSearched;
+    [SerializeField] private TMP_Text wordType1;
+    [SerializeField] private TMP_Text wordType2;
+    [SerializeField] private TMP_Text[] wordDef;
+    [SerializeField] private TMP_Text example1;
+    [SerializeField] private TMP_Text example1Alt;
+    [SerializeField] private TMP_Text example2;
+    [SerializeField] private TMP_Text example2Alt;
+    [SerializeField] private TMP_Text jlpt;
+    [SerializeField] private TMP_Text longDefinitionAboutTheWordEn;
+    [SerializeField] private TMP_Text longDefinitionAboutTheWordJp;
+    [SerializeField] private TMP_Text pageNumberText;
+    [SerializeField] private TMP_Text[] verbInflections;
+    [SerializeField] private TMP_Dropdown wordOptionsDropdown;
+    [SerializeField] private TMP_Text searchRelatedWordText;
 
-    public bool isTheWordAVerb;
-    public TMP_Text[] verbInflections;
-    public GameObject showVerbInflectionsButton;
+    [Header("UI Controls")]
+    [SerializeField] private GameObject showVerbInflectionsButton;
+    [SerializeField] private GameObject backButton;
+    [SerializeField] private GameObject searchRelatedWordButton;
+    [SerializeField] private GameObject noDictButton;
+    [SerializeField] private Scrollbar defScrollbar;
 
-    public int pageNumber = 1;
-    public GameObject backButton;
-    public GameObject searchRelatedWordButton;
-    public TMP_Text searchRelatedWordText;
-    public GameObject line1;
-    public GameObject line2;
-    public GameObject line3;
-    public GameObject line4;
-    public GameObject line5;
-    public GameObject line6;
+    [Header("Settings")]
+    [SerializeField] private string fileName = "KTBDict.json";
+    [SerializeField] private bool enableVerbSearch = true;
+    [SerializeField] private bool enableRelatedWordSearch = true;
 
-    public Scrollbar defScrollbar;
-
-    public float distanceBetweenMovement;
-
-    public TMP_Dropdown wordOptionsDropdown;
+    // Private fields
+    private bool isTheWordAVerb;
+    private bool isTheWordAGivenName;
+    private int pageNumber = 1;
+    private string currentRelatedWord = "";
     private List<InfoList> currentResults = new List<InfoList>();
+    private ENDictionary dict = new ENDictionary();
+    private string FilePath => Path.Combine(Application.persistentDataPath, fileName);
 
-    public ENDictionary dict = new ENDictionary();
+    #region Unity Lifecycle
 
-    public GameObject noDictButton;
-
-    public void SaveToJson()
+    private void Start()
     {
-        string dictData = JsonUtility.ToJson(dict);
-        string fileLocation = Application.persistentDataPath + "/KTBDict.json";
-        File.WriteAllText(fileLocation, dictData);
+        InitializeDictionary();
+        SetupUI();
     }
 
-    public void LoadToJson()
+    private void Update()
     {
-        string fileLocation = Application.persistentDataPath + "/KTBDict.json";
-        if (File.Exists(fileLocation))
+        HandleInput();
+        UpdateUI();
+    }
+
+    #endregion
+
+    #region Initialization
+
+    private void InitializeDictionary()
+    {
+        try
         {
-            string dictData = File.ReadAllText(fileLocation);
-            dict = JsonUtility.FromJson<ENDictionary>(dictData);
+            if (!File.Exists(FilePath))
+            {
+                noDictButton?.SetActive(true);
+                Debug.Log("Dictionary file not found. Creating new dictionary.");
+            }
+            
+            LoadFromJson();
+            Debug.Log($"Dictionary loaded successfully. Total words: {dict.wordList.Count}");
         }
-        else
+        catch (System.Exception e)
         {
+            Debug.LogError($"Failed to initialize dictionary: {e.Message}");
             SaveToJson();
         }
     }
 
-
-
-    public void SearchWord() // Method for searching words and updating the dropdown to show multiple search alternatives.
+    private void SetupUI()
     {
+        UpdatePageNumber();
+        UpdateBackButton();
+        UpdateSearchRelatedButton();
         ResetScrollbar();
+    }
 
-        string query = inputField.text.ToLower();
-        currentResults = dict.wordList.Where(word => word.word == query || word.kana == query || word.romaji.ToLower() == query || word.hiragana == query || word.alternativeForm.ToLower() == query ||
-        word.teFormInflection  == query || word.teFormInflectionRomaji.ToLower() == query ||
-        word.nonPastNegativeInflection == query || word.nonPastNegativeInflectionRomaji.ToLower() == query ||
-        word.nonPastNegativeInflectionPolite == query || word.nonPastNegativeInflectionPoliteRomaji.ToLower() == query ||
-        word.pastInflection == query || word.pastInflectionRomaji.ToLower() == query ||
-        word.pastNegativeInflection == query || word.pastNegativeInflectionRomaji == query ||
-        word.pastInflectionPolite == query || word.pastInflectionPoliteRomaji.ToLower() == query ||
-        word.pastNegativeInflectionPolite == query || word.pastNegativeInflectionPoliteRomaji.ToLower() == query ||
-        word.potentialInflection == query || word.potentialInflectionRomaji.ToLower() == query ||
-        word.potentialNegativeInflection == query || word.potentialNegativeInflectionRomaji.ToLower() == query ||
-        word.passiveInflection == query || word.passiveInflectionRomaji.ToLower() == query ||
-        word.passiveNegativeInflection == query || word.passiveNegativeInflectionRomaji.ToLower() == query ||
-        word.causativeInflection == query || word.causativeInflectionRomaji.ToLower() == query ||
-        word.causativeNegativeInflection == query || word.causativeNegativeInflectionRomaji.ToLower() == query ||
-        word.causativePassiveInflection == query || word.causativePassiveInflectionRomaji.ToLower() == query ||
-        word.causativePassiveNegativeInflection == query || word.causativePassiveNegativeInflectionRomaji.ToLower() == query ||
-        word.imperativeInflection == query || word.imperativeInflectionRomaji.ToLower() == query ||
-        word.imperativeNegativeInflection == query || word.imperativeNegativeInflectionRomaji.ToLower() == query).ToList();
+    #endregion
 
-        if (currentResults.Count > 0)
+    #region Data Persistence
+
+    public void SaveToJson()
+    {
+        try
         {
-            wordOptionsDropdown.gameObject.SetActive(true);
-            wordOptionsDropdown.ClearOptions();
-            wordOptionsDropdown.AddOptions(currentResults.Select(word => word.word).ToList());
-            wordOptionsDropdown.onValueChanged.RemoveAllListeners();
-            wordOptionsDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+            if (dict == null)
+            {
+                dict = new ENDictionary();
+            }
 
-            DisplayWord(currentResults[0]);
+            string dictData = JsonUtility.ToJson(dict, true);
+            File.WriteAllText(FilePath, dictData);
+            Debug.Log($"Dictionary saved successfully to: {FilePath}");
         }
-        else
+        catch (System.Exception e)
         {
-            ClearHistory();
-            wordSearched.text = "Word not found";
+            Debug.LogError($"Failed to save dictionary: {e.Message}");
         }
     }
+
+    public void LoadFromJson()
+    {
+        if (!File.Exists(FilePath))
+        {
+            dict = new ENDictionary();
+            SaveToJson();
+            return;
+        }
+
+        try
+        {
+            string dictData = File.ReadAllText(FilePath);
+            dict = JsonUtility.FromJson<ENDictionary>(dictData);
+            
+            if (dict == null)
+            {
+                dict = new ENDictionary();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to load dictionary: {e.Message}");
+            dict = new ENDictionary();
+        }
+    }
+
+    #endregion
+
+    #region Search Methods
+
+    public void SearchWord()
+    {
+        if (string.IsNullOrWhiteSpace(inputField?.text))
+        {
+            Debug.LogWarning("Search term is empty");
+            return;
+        }
+
+        ResetScrollbar();
+        string query = inputField.text.ToLower().Trim();
+        currentResults = PerformSearch(query);
+
+        UpdateSearchResults();
+    }
+
     public void SearchRelatedWord()
     {
+        if (string.IsNullOrWhiteSpace(currentRelatedWord))
+        {
+            Debug.LogWarning("No related word to search");
+            return;
+        }
+
         ResetScrollbar();
+        string query = currentRelatedWord.ToLower().Trim();
+        currentResults = PerformSearch(query);
 
-        string query = currentRelatedWord;
-        currentResults = dict.wordList.Where(word => word.word.ToLower() == query || word.kana.ToLower() == query || word.romaji.ToLower() == query || word.hiragana.ToLower() == query || word.alternativeForm.ToLower() == query).ToList();
+        UpdateSearchResults();
+    }
 
+    private List<InfoList> PerformSearch(string query)
+    {
+        if (dict?.wordList == null)
+        {
+            return new List<InfoList>();
+        }
+
+        return dict.wordList.Where(word => MatchesSearchCriteria(word, query)).ToList();
+    }
+
+    private bool MatchesSearchCriteria(InfoList word, string query)
+    {
+        // Basic search fields
+        if (MatchesField(word.word, query) ||
+            MatchesField(word.kana, query) ||
+            MatchesField(word.romaji, query) ||
+            MatchesField(word.hiragana, query) ||
+            MatchesField(word.alternativeForm, query))
+        {
+            return true;
+        }
+
+        // Verb inflections search (if enabled)
+        if (enableVerbSearch && word.isTheWordAVerb)
+        {
+            return MatchesVerbInflections(word, query);
+        }
+
+        return false;
+    }
+
+    private bool MatchesField(string field, string query)
+    {
+        return !string.IsNullOrWhiteSpace(field) && 
+               field.ToLower().Contains(query);
+    }
+
+    private bool MatchesVerbInflections(InfoList word, string query)
+    {
+        var inflections = new[]
+        {
+            word.nonPastInflection, word.nonPastInflectionRomaji,
+            word.nonPastNegativeInflection, word.nonPastNegativeInflectionRomaji,
+            word.nonPastInflectionPolite, word.nonPastInflectionPoliteRomaji,
+            word.nonPastNegativeInflectionPolite, word.nonPastNegativeInflectionPoliteRomaji,
+            word.pastInflection, word.pastInflectionRomaji,
+            word.pastNegativeInflection, word.pastNegativeInflectionRomaji,
+            word.pastInflectionPolite, word.pastInflectionPoliteRomaji,
+            word.pastNegativeInflectionPolite, word.pastNegativeInflectionPoliteRomaji,
+            word.teFormInflection, word.teFormInflectionRomaji,
+            word.teFormInflectionNegative, word.teFormInflectionNegativeRomaji,
+            word.potentialInflection, word.potentialInflectionRomaji,
+            word.potentialNegativeInflection, word.potentialNegativeInflectionRomaji,
+            word.passiveInflection, word.passiveInflectionRomaji,
+            word.passiveNegativeInflection, word.passiveNegativeInflectionRomaji,
+            word.causativeInflection, word.causativeInflectionRomaji,
+            word.causativeNegativeInflection, word.causativeNegativeInflectionRomaji,
+            word.causativePassiveInflection, word.causativePassiveInflectionRomaji,
+            word.causativePassiveNegativeInflection, word.causativePassiveNegativeInflectionRomaji,
+            word.imperativeInflection, word.imperativeInflectionRomaji,
+            word.imperativeNegativeInflection, word.imperativeNegativeInflectionRomaji
+        };
+
+        return inflections.Any(inflection => MatchesField(inflection, query));
+    }
+
+    private void UpdateSearchResults()
+    {
         if (currentResults.Count > 0)
         {
-            wordOptionsDropdown.gameObject.SetActive(true);
-            wordOptionsDropdown.ClearOptions();
-            wordOptionsDropdown.AddOptions(currentResults.Select(word => word.word).ToList());
-            wordOptionsDropdown.onValueChanged.RemoveAllListeners();
-            wordOptionsDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-
+            ShowDropdown();
             DisplayWord(currentResults[0]);
         }
         else
@@ -139,14 +258,25 @@ public class DictManager : MonoBehaviour
             ClearHistory();
             wordSearched.text = "Word not found";
         }
+    }
 
-        if (query == "")
+    private void ShowDropdown()
+    {
+        if (wordOptionsDropdown != null)
         {
-            isTheWordAVerb = false;
+            wordOptionsDropdown.gameObject.SetActive(true);
+            wordOptionsDropdown.ClearOptions();
+            wordOptionsDropdown.AddOptions(currentResults.Select(word => word.word).ToList());
+            wordOptionsDropdown.onValueChanged.RemoveAllListeners();
+            wordOptionsDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         }
     }
 
-    public void OnDropdownValueChanged(int index) // Dropdown search updater
+    #endregion
+
+    #region UI Management
+
+    public void OnDropdownValueChanged(int index)
     {
         if (index >= 0 && index < currentResults.Count)
         {
@@ -156,218 +286,254 @@ public class DictManager : MonoBehaviour
 
     public void DisplayWord(InfoList foundWord)
     {
-        wordSearched.text = foundWord.word;
-        kana.text = foundWord.kana;
-        pitch.text = foundWord.pitch;
-        wordType1.text = foundWord.wordType1;
-        wordType2.text = foundWord.wordType2;
+        if (foundWord == null) return;
+
+        // Basic word information
+        SetTextSafely(wordSearched, foundWord.word);
+        SetTextSafely(kana, foundWord.kana);
+        SetTextSafely(pitch, foundWord.pitch);
+        SetTextSafely(wordType1, foundWord.wordType1);
+        SetTextSafely(wordType2, foundWord.wordType2);
+        SetTextSafely(jlpt, foundWord.jlptLevel);
+
+        // Definitions
+        UpdateDefinitions(foundWord.def);
+
+        // Examples
+        SetTextSafely(example1, foundWord.example1);
+        SetTextSafely(example1Alt, foundWord.example1Alt);
+        SetTextSafely(example2, foundWord.example2);
+        SetTextSafely(example2Alt, foundWord.example2Alt);
+
+        // Long definitions
+        SetTextSafely(longDefinitionAboutTheWordEn, foundWord.longDefinitionAboutTheWordEn);
+        SetTextSafely(longDefinitionAboutTheWordJp, foundWord.longDefinitionAboutTheWordJp);
+
+        // Related word
+        currentRelatedWord = foundWord.relatedWord ?? "";
+        SetTextSafely(searchRelatedWordText, foundWord.relatedWord);
+
+        // Given name
+        UpdateGivenName(foundWord);
+
+        // Verb inflections
+        UpdateVerbInflections(foundWord);
+
+        // Word type colors
+        UpdateWordTypeColors();
+    }
+
+    private void SetTextSafely(TMP_Text textComponent, string value)
+    {
+        if (textComponent != null)
+        {
+            textComponent.text = value ?? "";
+        }
+    }
+
+    private void SetInputFieldSafely(TMP_InputField inputField, string value)
+    {
+        if (inputField != null)
+        {
+            inputField.text = value ?? "";
+        }
+    }
+
+    private void UpdateDefinitions(string[] definitions)
+    {
+        if (wordDef == null) return;
 
         for (int i = 0; i < wordDef.Length; i++)
         {
-            if (i < foundWord.def.Length)
+            if (i < definitions?.Length)
             {
-                wordDef[i].text = foundWord.def[i];
+                SetTextSafely(wordDef[i], definitions[i]);
             }
             else
             {
-                wordDef[i].text = "";
+                SetTextSafely(wordDef[i], "");
             }
-        }
-
-        isTheWordAVerb = foundWord.isTheWordAVerb;
-        if (isTheWordAVerb == true)
-        {
-            showVerbInflectionsButton.SetActive(true);
-            verbInflections[0].text = foundWord.nonPastInflection;
-            verbInflections[1].text = foundWord.nonPastNegativeInflection;
-            verbInflections[2].text = foundWord.nonPastInflectionPolite;
-            verbInflections[3].text = foundWord.nonPastNegativeInflectionPolite;
-            verbInflections[4].text = foundWord.pastInflection;
-            verbInflections[5].text = foundWord.pastNegativeInflection;
-            verbInflections[6].text = foundWord.pastInflectionPolite;
-            verbInflections[7].text = foundWord.pastNegativeInflectionPolite;
-            verbInflections[8].text = foundWord.teFormInflection;
-            verbInflections[9].text = foundWord.teFormInflectionNegative;
-            verbInflections[10].text = foundWord.potentialInflection;
-            verbInflections[11].text = foundWord.potentialNegativeInflection;
-            verbInflections[12].text = foundWord.passiveInflection;
-            verbInflections[13].text = foundWord.passiveNegativeInflection;
-            verbInflections[14].text = foundWord.causativeInflection;
-            verbInflections[15].text = foundWord.causativeNegativeInflection;
-            verbInflections[16].text = foundWord.imperativeInflection;
-            verbInflections[17].text = foundWord.imperativeNegativeInflection;
-        }
-        else
-        {
-            showVerbInflectionsButton.SetActive(false);
-            for (int i = 0; i < 18; i++)
-            {
-                verbInflections[i].text = "";
-            }
-        }
-
-        example1.text = foundWord.example1;
-        example1Alt.text = foundWord.example1Alt;
-        example2.text = foundWord.example2;
-        example2Alt.text = foundWord.example2Alt;
-        jlpt.text = foundWord.jlptLevel;
-        longDefinitionAboutTheWordEn.text = foundWord.longDefinitionAboutTheWordEn;
-        longDefinitionAboutTheWordJp.text = foundWord.longDefinitionAboutTheWordJp;
-        currentRelatedWord = foundWord.relatedWord;
-        searchRelatedWordText.text = foundWord.relatedWord;
-
-        if (foundWord.isTheWordAGivenName)
-        {
-            givenName.text = foundWord.givenName;
-        }
-        else
-        {
-            givenName.text = "";
-        }
-
-        //Word Type 1
-        if (wordType1.text.ToLower() == "verb")
-        {
-            wordType1.color = Color.red;
-        }
-        else if (wordType1.text.ToLower() == "noun")
-        {
-            wordType1.color = Color.cyan;
-        }
-        else if (wordType1.text.ToLower() == "na-adjective")
-        {
-            wordType1.color = Color.yellow;
-        }
-        else if (wordType1.text.ToLower() == "i-adjective" || wordType1.text.ToLower() == "?-adjective")
-        {
-            wordType1.color = Color.magenta;
-        }
-        else if (wordType1.text.ToLower() == "suru verb")
-        {
-            wordType1.color = Color.gray;
-        }
-        else
-        {
-            wordType1.color = Color.white;
-        }
-        //Word Type 2
-        if (wordType2.text.ToLower() == "verb")
-        {
-            wordType2.color = Color.red;
-        }
-        else if (wordType2.text.ToLower() == "noun")
-        {
-            wordType2.color = Color.cyan;
-        }
-        else if (wordType2.text.ToLower() == "na-adjective")
-        {
-            wordType2.color = Color.yellow;
-        }
-        else if (wordType2.text.ToLower() == "i-adjective")
-        {
-            wordType2.color = Color.magenta;
-        }
-        else if (wordType2.text.ToLower() == "suru verb")
-        {
-            wordType2.color = Color.gray;
-        }
-        else
-        {
-            wordType2.color = Color.white;
         }
     }
 
-    public void ClearHistory() // Clear all textes once the results are null or you go back in the menu.
+    private void UpdateGivenName(InfoList word)
+    {
+        if (word.isTheWordAGivenName)
+        {
+            SetTextSafely(givenName, word.givenName);
+        }
+        else
+        {
+            SetTextSafely(givenName, "");
+        }
+    }
+
+    private void UpdateVerbInflections(InfoList word)
+    {
+        isTheWordAVerb = word.isTheWordAVerb;
+        
+        if (showVerbInflectionsButton != null)
+        {
+            showVerbInflectionsButton.SetActive(isTheWordAVerb);
+        }
+
+        if (verbInflections != null)
+        {
+            if (isTheWordAVerb)
+            {
+                SetVerbInflectionText(0, word.nonPastInflection);
+                SetVerbInflectionText(1, word.nonPastNegativeInflection);
+                SetVerbInflectionText(2, word.nonPastInflectionPolite);
+                SetVerbInflectionText(3, word.nonPastNegativeInflectionPolite);
+                SetVerbInflectionText(4, word.pastInflection);
+                SetVerbInflectionText(5, word.pastNegativeInflection);
+                SetVerbInflectionText(6, word.pastInflectionPolite);
+                SetVerbInflectionText(7, word.pastNegativeInflectionPolite);
+                SetVerbInflectionText(8, word.teFormInflection);
+                SetVerbInflectionText(9, word.teFormInflectionNegative);
+                SetVerbInflectionText(10, word.potentialInflection);
+                SetVerbInflectionText(11, word.potentialNegativeInflection);
+                SetVerbInflectionText(12, word.passiveInflection);
+                SetVerbInflectionText(13, word.passiveNegativeInflection);
+                SetVerbInflectionText(14, word.causativeInflection);
+                SetVerbInflectionText(15, word.causativeNegativeInflection);
+                SetVerbInflectionText(16, word.imperativeInflection);
+                SetVerbInflectionText(17, word.imperativeNegativeInflection);
+            }
+            else
+            {
+                for (int i = 0; i < verbInflections.Length; i++)
+                {
+                    SetVerbInflectionText(i, "");
+                }
+            }
+        }
+    }
+
+    private void SetVerbInflectionText(int index, string text)
+    {
+        if (index >= 0 && index < verbInflections?.Length)
+        {
+            SetTextSafely(verbInflections[index], text);
+        }
+    }
+
+    private void UpdateWordTypeColors()
+    {
+        UpdateWordTypeColor(wordType1);
+        UpdateWordTypeColor(wordType2);
+    }
+
+    private void UpdateWordTypeColor(TMP_Text wordTypeText)
+    {
+        if (wordTypeText == null) return;
+
+        string text = wordTypeText.text.ToLower();
+        wordTypeText.color = text switch
+        {
+            "verb" => Color.red,
+            "noun" => Color.cyan,
+            "na-adjective" => Color.yellow,
+            "i-adjective" or "?-adjective" => Color.magenta,
+            "suru verb" => Color.gray,
+            _ => Color.white
+        };
+    }
+
+    public void ClearHistory()
     {
         currentRelatedWord = "";
-        inputField.text = "";
-        wordSearched.text = "";
-        kana.text = "";
-        jlpt.text = "";
-        for (int i = 0; i < wordDef.Length; i++)
+        SetInputFieldSafely(inputField, "");
+        SetTextSafely(wordSearched, "");
+        SetTextSafely(kana, "");
+        SetTextSafely(jlpt, "");
+        SetTextSafely(wordType1, "");
+        SetTextSafely(wordType2, "");
+        SetTextSafely(example1, "");
+        SetTextSafely(example1Alt, "");
+        SetTextSafely(example2, "");
+        SetTextSafely(example2Alt, "");
+        SetTextSafely(pitch, "");
+        SetTextSafely(longDefinitionAboutTheWordEn, "");
+        SetTextSafely(longDefinitionAboutTheWordJp, "");
+        SetTextSafely(givenName, "");
+
+        UpdateDefinitions(new string[0]);
+        UpdateVerbInflections(new InfoList { isTheWordAVerb = false });
+
+        if (wordOptionsDropdown != null)
         {
-            wordDef[i].text = "";
+            wordOptionsDropdown.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < 18; i++)
+        if (showVerbInflectionsButton != null)
         {
-            verbInflections[i].text = "";
-        }
-
-        wordType1.text = "";
-        wordType2.text = "";
-        example1.text = "";
-        example1Alt.text = "";
-        example2.text = "";
-        example2Alt.text = "";
-        pitch.text = "";
-        longDefinitionAboutTheWordEn.text = "";
-        longDefinitionAboutTheWordJp.text = "";
-        isTheWordAGivenName = false;
-        wordOptionsDropdown.gameObject.SetActive(false);
-        showVerbInflectionsButton.SetActive(false);
-    }
-
-    void Start()
-    {
-        try
-        {
-            string fileLocation = Application.persistentDataPath + "/KTBDict.json";
-            if (!File.Exists(fileLocation))
-            {
-                noDictButton.SetActive(true);
-            }
-            LoadToJson();
-
-        }
-        catch (FileNotFoundException e)
-        {
-            SaveToJson();
+            showVerbInflectionsButton.SetActive(false);
         }
     }
 
-    void Update()
+    #endregion
+
+    #region Input Handling
+
+    private void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
             SearchWord();
-            inputField.ActivateInputField();
+            inputField?.ActivateInputField();
         }
+    }
 
-        pageNumberText.text = pageNumber.ToString();
+    private void UpdateUI()
+    {
+        UpdatePageNumber();
+        UpdateBackButton();
+        UpdateSearchRelatedButton();
+    }
 
-        if (pageNumber <= 1)
+    private void UpdatePageNumber()
+    {
+        if (pageNumberText != null)
         {
-            backButton.SetActive(false);
+            pageNumberText.text = pageNumber.ToString();
         }
-        else
-        {
-            backButton.SetActive(true);
-        }
+    }
 
-        if (currentRelatedWord != "")
+    private void UpdateBackButton()
+    {
+        if (backButton != null)
         {
-            searchRelatedWordButton.SetActive(true);
+            backButton.SetActive(pageNumber > 1);
         }
-        else
-        {
-            searchRelatedWordButton.SetActive(false);
-        }
+    }
 
-        /*if (isTheWordAVerb == true)
+    private void UpdateSearchRelatedButton()
+    {
+        if (searchRelatedWordButton != null)
         {
-            showVerbInflectionsButton.SetActive(true);
+            searchRelatedWordButton.SetActive(!string.IsNullOrEmpty(currentRelatedWord));
         }
-        else
-        {
-            showVerbInflectionsButton.SetActive(false);
-        }*/
     }
 
     public void ResetScrollbar()
     {
-        defScrollbar.value = 100;
+        if (defScrollbar != null)
+        {
+            defScrollbar.value = 1f;
+        }
     }
+
+    #endregion
+
+    #region Public Properties
+
+    public ENDictionary Dictionary => dict;
+    public int WordCount => dict?.wordList?.Count ?? 0;
+    public bool IsVerb => isTheWordAVerb;
+    public int PageNumber => pageNumber;
+
+    #endregion
 }
 
 [System.Serializable]

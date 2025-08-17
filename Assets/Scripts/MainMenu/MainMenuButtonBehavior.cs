@@ -111,6 +111,10 @@ public class MainMenuButtonBehavior : MonoBehaviour
     {
         SceneManager.LoadScene(7);
     }
+    public void StartCustomDeckQuiz()
+    {
+        SceneManager.LoadScene(8);
+    }
 
     public void ReturnToMainMenu()
     {

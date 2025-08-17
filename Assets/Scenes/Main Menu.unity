@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1642,7 +1641,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Custom Dect (Comming Soon)
+  m_text: Custom Dect
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5d9fd4cc1d3d4e64d8f49020f6f51b36, type: 2}
   m_sharedMaterial: {fileID: 21746434789624154, guid: 5d9fd4cc1d3d4e64d8f49020f6f51b36, type: 2}
@@ -1669,7 +1668,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.7
+  m_fontSize: 62.5
   m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12632,6 +12631,8 @@ GameObject:
   - component: {fileID: 426875426}
   - component: {fileID: 426875428}
   - component: {fileID: 426875429}
+  - component: {fileID: 426875431}
+  - component: {fileID: 426875430}
   m_Layer: 0
   m_Name: DictManager
   m_TagString: Untagged
@@ -12654,7 +12655,6 @@ MonoBehaviour:
   inputField: {fileID: 1240772459}
   kana: {fileID: 1759186427}
   givenName: {fileID: 1619317332}
-  isTheWordAGivenName: 0
   pitch: {fileID: 163715446}
   wordSearched: {fileID: 613345542}
   wordType1: {fileID: 998121696}
@@ -12692,8 +12692,6 @@ MonoBehaviour:
   longDefinitionAboutTheWordEn: {fileID: 134017740}
   longDefinitionAboutTheWordJp: {fileID: 1895258871}
   pageNumberText: {fileID: 519785394}
-  currentRelatedWord: 
-  isTheWordAVerb: 0
   verbInflections:
   - {fileID: 329418338}
   - {fileID: 474733307}
@@ -12713,85 +12711,16 @@ MonoBehaviour:
   - {fileID: 1972729805}
   - {fileID: 724704357}
   - {fileID: 140567065}
+  wordOptionsDropdown: {fileID: 1211710433}
+  searchRelatedWordText: {fileID: 2143167808}
   showVerbInflectionsButton: {fileID: 839073851}
-  pageNumber: 1
   backButton: {fileID: 1222412570}
   searchRelatedWordButton: {fileID: 221740420}
-  searchRelatedWordText: {fileID: 2143167808}
-  line1: {fileID: 1653597084}
-  line2: {fileID: 0}
-  line3: {fileID: 0}
-  line4: {fileID: 0}
-  line5: {fileID: 0}
-  line6: {fileID: 0}
-  defScrollbar: {fileID: 326148094}
-  distanceBetweenMovement: 17.8
-  wordOptionsDropdown: {fileID: 1211710433}
-  dict:
-    wordList:
-    - word: "\u6D74\u3073\u308B"
-      kana: "\u3042\u3073\u308B"
-      hiragana: "\u3042\u3073\u308B"
-      alternativeForm: "\u3042\u3073\u308B"
-      romaji: abiru
-      wordType1: Verb
-      wordType2: 
-      pitch: "\u3042/\u3073\u308B"
-      givenName: 
-      isTheWordAGivenName: 0
-      jlptLevel: JLPT N5
-      def:
-      - To bathe
-      - To shower
-      example1: "\u30B7\u30E3\u30EF\u30FC\u3092\u6D74\u3073\u308B"
-      example1Alt: To take a shower
-      example2: "\u30D5\u30C3\u30C8\u30E9\u30A4\u30C8\u3092\u6D74\u3073\u308B"
-      example2Alt: To appear on the stage
-      longDefinitionAboutTheWordEn: "\u6E6F\u3084\u6C34\u3092\u304B\u3076\u308B"
-      longDefinitionAboutTheWordJp: To cover something in hot water or water.
-      relatedWord: 
-      isTheWordAVerb: 0
-      nonPastInflection: 
-      nonPastInflectionRomaji: 
-      nonPastNegativeInflection: 
-      nonPastNegativeInflectionRomaji: 
-      nonPastInflectionPolite: 
-      nonPastInflectionPoliteRomaji: 
-      nonPastNegativeInflectionPolite: 
-      nonPastNegativeInflectionPoliteRomaji: 
-      pastInflection: 
-      pastInflectionRomaji: 
-      pastNegativeInflection: 
-      pastNegativeInflectionRomaji: 
-      pastInflectionPolite: 
-      pastInflectionPoliteRomaji: 
-      pastNegativeInflectionPolite: 
-      pastNegativeInflectionPoliteRomaji: 
-      teFormInflection: 
-      teFormInflectionRomaji: 
-      teFormInflectionNegative: 
-      teFormInflectionNegativeRomaji: 
-      potentialInflection: 
-      potentialInflectionRomaji: 
-      potentialNegativeInflection: 
-      potentialNegativeInflectionRomaji: 
-      passiveInflection: 
-      passiveInflectionRomaji: 
-      passiveNegativeInflection: 
-      passiveNegativeInflectionRomaji: 
-      causativeInflection: 
-      causativeInflectionRomaji: 
-      causativeNegativeInflection: 
-      causativeNegativeInflectionRomaji: 
-      causativePassiveInflection: 
-      causativePassiveInflectionRomaji: 
-      causativePassiveNegativeInflection: 
-      causativePassiveNegativeInflectionRomaji: 
-      imperativeInflection: 
-      imperativeInflectionRomaji: 
-      imperativeNegativeInflection: 
-      imperativeNegativeInflectionRomaji: 
   noDictButton: {fileID: 2040343526}
+  defScrollbar: {fileID: 326148094}
+  fileName: KTBDict.json
+  enableVerbSearch: 1
+  enableRelatedWordSearch: 1
 --- !u!4 &426875427
 Transform:
   m_ObjectHideFlags: 0
@@ -12871,7 +12800,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c433ea4b2f455e49a7b6954589d73ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTheWordAVerb: 0
   verbInflections:
   - {fileID: 1376797700}
   - {fileID: 1339875867}
@@ -12921,69 +12849,42 @@ MonoBehaviour:
   searchRelatedWordText: {fileID: 0}
   seeVerbInflectionMenuButton: {fileID: 1677362022}
   wordOptionsDropdown: {fileID: 0}
-  dict:
-    wordList:
-    - word: 
-      kana: 
-      hiragana: 
-      alternativeForm: 
-      romaji: 
-      wordType1: 
-      wordType2: 
-      pitch: 
-      givenName: 
-      isTheWordAGivenName: 0
-      jlptLevel: 
-      def: []
-      example1: 
-      example1Alt: 
-      example2: 
-      example2Alt: 
-      longDefinitionAboutTheWordEn: 
-      longDefinitionAboutTheWordJp: 
-      relatedWord: 
-      isTheWordAVerb: 0
-      nonPastInflection: 
-      nonPastInflectionRomaji: 
-      nonPastNegativeInflection: 
-      nonPastNegativeInflectionRomaji: 
-      nonPastInflectionPolite: 
-      nonPastInflectionPoliteRomaji: 
-      nonPastNegativeInflectionPolite: 
-      nonPastNegativeInflectionPoliteRomaji: 
-      pastInflection: 
-      pastInflectionRomaji: 
-      pastNegativeInflection: 
-      pastNegativeInflectionRomaji: 
-      pastInflectionPolite: 
-      pastInflectionPoliteRomaji: 
-      pastNegativeInflectionPolite: 
-      pastNegativeInflectionPoliteRomaji: 
-      teFormInflection: 
-      teFormInflectionRomaji: 
-      teFormInflectionNegative: 
-      teFormInflectionNegativeRomaji: 
-      potentialInflection: 
-      potentialInflectionRomaji: 
-      potentialNegativeInflection: 
-      potentialNegativeInflectionRomaji: 
-      passiveInflection: 
-      passiveInflectionRomaji: 
-      passiveNegativeInflection: 
-      passiveNegativeInflectionRomaji: 
-      causativeInflection: 
-      causativeInflectionRomaji: 
-      causativeNegativeInflection: 
-      causativeNegativeInflectionRomaji: 
-      causativePassiveInflection: 
-      causativePassiveInflectionRomaji: 
-      causativePassiveNegativeInflection: 
-      causativePassiveNegativeInflectionRomaji: 
-      imperativeInflection: 
-      imperativeInflectionRomaji: 
-      imperativeNegativeInflection: 
-      imperativeNegativeInflectionRomaji: 
-  currentDictWordAmount: 0
+  fileName: CustomJisho.json
+  searchManager: {fileID: 426875431}
+  validator: {fileID: 426875430}
+--- !u!114 &426875430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426875425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6de6e28e22b9b643abf5bbe6c6654df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireWord: 1
+  requireKana: 1
+  requireJLPTLevel: 0
+  requireAtLeastOneDefinition: 1
+  maxWordLength: 50
+  maxDefinitionLength: 500
+--- !u!114 &426875431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426875425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d0743b3580c4444a6d42401e764a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseSensitive: 0
+  searchInDefinitions: 1
+  searchInExamples: 1
 --- !u!1 &433215448
 GameObject:
   m_ObjectHideFlags: 0
@@ -45339,7 +45240,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1589909918}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 601607751}
+        m_TargetAssemblyTypeName: MainMenuButtonBehavior, Assembly-CSharp
+        m_MethodName: StartCustomDeckQuiz
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1589909918
 MonoBehaviour:
   m_ObjectHideFlags: 0
